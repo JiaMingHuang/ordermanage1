@@ -1,0 +1,30 @@
+spring:
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    cache: false
+  jpa:
+    show-sql: true
+    database: MYSQL
+    hibernate:
+     ddl-auto: update
+  datasource:
+    url: jdbc:mysql://118.190.215.100:3306/liubo?useSSL=false&amp;useUnicode=true&amp;characterEncoding=UTF-8
+    username: liubo
+    password: _LiubO<666
+    driver-class-name: com.mysql.jdbc.Driver
+    dbcp2:
+      initial-size: 20
+      validation-query: SELECT 1
+      testWhileIdle: true
+      timeBetweenEvictionRunsMillis: 300000
+      numTestsPerEvictionRun: 50
+      minEvictableIdleTimeMillis: 3600000
+      max-conn-lifetime-millis:
+      min-idle: 5
+      max-idle: 50
+      max-wait-millis: 10000
+logging:
+  level:
+    com.yc: error
+    org.hibernate.SQL: debug
