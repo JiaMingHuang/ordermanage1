@@ -9,4 +9,6 @@ public class OrdermanageApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(OrdermanageApplication.class, args);
 	}
+
+
 }

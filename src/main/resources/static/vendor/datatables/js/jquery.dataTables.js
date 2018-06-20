@@ -122,7 +122,7 @@
 		 *    $(document).ready(function() {
 		 *      var oTable = $('#example').dataTable();
 		 *
-		 *      // Filter to rows with 'Webkit' in them, add a background colour and then
+		 *      // filter to rows with 'Webkit' in them, add a background colour and then
 		 *      // remove the filter, thus highlighting the 'Webkit' rows only.
 		 *      oTable.fnFilter('Webkit');
 		 *      oTable.$('tr', {"search": "applied"}).css('backgroundColor', 'blue');
@@ -175,7 +175,7 @@
 		 *    $(document).ready(function() {
 		 *      var oTable = $('#example').dataTable();
 		 *
-		 *      // Filter to 'Webkit' and get all data for
+		 *      // filter to 'Webkit' and get all data for
 		 *      oTable.fnFilter('Webkit');
 		 *      var data = oTable._('tr', {"search": "applied"});
 		 *
@@ -436,7 +436,7 @@
 		
 		
 		/**
-		 * Filter the input based on data
+		 * filter the input based on data
 		 *  @param {string} sInput String to filter the table on
 		 *  @param {int|null} [iColumn] Column to limit filtering to
 		 *  @param {bool} [bRegex=false] Treat as regular expression or not
@@ -3629,7 +3629,7 @@
 			}
 			else if ( cOption == 'f' && features.bFilter )
 			{
-				/* Filter */
+				/* filter */
 				featureNode = _fnFeatureHtmlFilter( oSettings );
 			}
 			else if ( cOption == 'r' && features.bProcessing )
@@ -4149,7 +4149,7 @@
 	
 	/**
 	 * Generate the node required for filtering text
-	 *  @returns {node} Filter control element
+	 *  @returns {node} filter control element
 	 *  @param {object} oSettings dataTables settings object
 	 *  @memberof DataTable#oApi
 	 */
@@ -4235,7 +4235,7 @@
 	
 	
 	/**
-	 * Filter the table using both the global filter and column based filtering
+	 * filter the table using both the global filter and column based filtering
 	 *  @param {object} oSettings dataTables settings object
 	 *  @param {object} oSearch search information
 	 *  @param {int} [iForce] force a research of the master array (1) or not (undefined or 0)
@@ -4322,7 +4322,7 @@
 	
 	
 	/**
-	 * Filter the table on a per-column basis
+	 * filter the table on a per-column basis
 	 *  @param {object} oSettings dataTables settings object
 	 *  @param {string} sInput string to filter on
 	 *  @param {int} iColumn column to filter
@@ -4352,7 +4352,7 @@
 	
 	
 	/**
-	 * Filter the data table based on user input and draw the table
+	 * filter the data table based on user input and draw the table
 	 *  @param {object} settings dataTables settings object
 	 *  @param {string} input string to filter on
 	 *  @param {int} force optional - force a research of the master array (1) or not (undefined or 0)
@@ -11622,7 +11622,7 @@
 			 *    $(document).ready( function() {
 			 *      $('#example').dataTable( {
 			 *        "language": {
-			 *          "search": "Filter records:"
+			 *          "search": "filter records:"
 			 *        }
 			 *      } );
 			 *    } );
@@ -14669,7 +14669,7 @@
 	
 	
 	
-	// Filter formatting functions. See model.ext.ofnSearch for information about
+	// filter formatting functions. See model.ext.ofnSearch for information about
 	// what is required from these methods.
 	// 
 	// Note that additional search methods are added for the html numbers and

@@ -3,6 +3,8 @@ spring:
     prefix: classpath:/templates/
     suffix: .html
     cache: false
+    encoding: UTF-8
+    mode: HTML5
   jpa:
     show-sql: true
     database: MYSQL
@@ -26,5 +28,5 @@ spring:
       max-wait-millis: 10000
 logging:
   level:
-    com.yc: error
+    com.yc: info
     org.hibernate.SQL: debug
