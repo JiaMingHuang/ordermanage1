@@ -1,3 +1,111 @@
-<p>
-user-page
-</p>
+<div class="panel panel-default">
+    <div class="panel-heading">账户信息管理</div>
+
+    <div class="panel-body">
+        <form>
+            <div class="form-group">
+                <label>用户名：</label>
+                <input class="form-control" name="userid">
+                <label>登录账户：</label>
+                <input class="form-control" name="userid">
+            </div>
+            <button type="button" class="btn btn-primary">查询</button>
+            <button id="toUserAdd" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+                新增用户
+            </button>
+        </form>
+    </div>
+    <div class="panel-heading">账户信息列表</div>
+    <div class="panel-body">
+        <!--
+        <div id="dataTables-example_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>序号</th>
+                                <th>用户名</th>
+                                <th>登录账户</th>
+                                <th>（店/厂）名称</th>
+                                <th>联系电话</th>
+                                <th>地址</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Mark</td>
+                                <td>Otto</td>
+                                <td>@mdo</td>
+                                <td>Mark</td>
+                                <td>Otto</td>
+                                <td>
+                                    <p class="fa fa-edit"></p>
+                                    <p class="fa fa-trash-o"></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>Mark</td>
+                                <td>Otto</td>
+                                <td>@mdo</td>
+                                <td>Mark</td>
+                                <td>Otto</td>
+                                <td>
+                                    <p class="fa fa-edit"></p>
+                                    <p class="fa fa-trash-o"></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>Mark</td>
+                                <td>Otto</td>
+                                <td>@mdo</td>
+                                <td>Mark</td>
+                                <td>Otto</td>
+                                <td>
+                                    <p class="fa fa-edit"></p>
+                                    <p class="fa fa-trash-o"></p>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="dataTables_info" id="dataTables-example_info" role="status" aria-live="polite">
+                        Showing 1 to 10 of 57 entries
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="dataTables_paginate paging_simple_numbers" id="dataTables-example_paginate">
+                        <ul class="pagination">
+                            <li class="paginate_button previous disabled" aria-controls="dataTables-example"
+                                tabindex="0" id="dataTables-example_previous"><a href="#">Previous</a></li>
+                            <li class="paginate_button active" aria-controls="dataTables-example" tabindex="0"><a
+                                    href="#">1</a></li>
+                            <li class="paginate_button " aria-controls="dataTables-example" tabindex="0"><a
+                                    href="#">2</a></li>
+                            <li class="paginate_button " aria-controls="dataTables-example" tabindex="0"><a
+                                    href="#">3</a></li>
+                            <li class="paginate_button next" aria-controls="dataTables-example" tabindex="0"
+                                id="dataTables-example_next"><a href="#">Next</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        -->
+    </div>
+
+    <script>
+        $("#toUserAdd").click(function () {
+            $(".modal-content").load("/user/add");
+        })
+    </script>
+</div>
