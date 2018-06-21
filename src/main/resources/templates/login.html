@@ -70,7 +70,7 @@
                                 </div>
                                 -->
                                 <!-- Change this to a button or input when using this as a form -->
-                                <span th:text="${errormessage}"></span>
+                                <span id="errormessage" th:text="${errormessage}"></span>
                                 <button type="submit" id="loginbutton" class="btn btn-primary btn-block">登录</button>
                             </fieldset>
                         </form>
@@ -81,4 +81,14 @@
     </div>
 
 </body>
+<script>
+    $('#loginbutton').click(function () {
+        var userid = $("#userid").val();
+        var password = $("#password").val();
+        if (userid == '' || password == '') {
+            $("#errormessage").text("用户名或密码不能为空");
+            return false;
+        }
+    });
+</script>
 </html>

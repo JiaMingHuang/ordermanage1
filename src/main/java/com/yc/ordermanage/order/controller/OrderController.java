@@ -2,13 +2,17 @@ package com.yc.ordermanage.order.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-
+@RequestMapping("/order")
 @Controller
 public class OrderController {
 
-	@RequestMapping("/order-page")
-	public String index() {
+	@RequestMapping("/page")
+	public String initOrderPage() {
 		return "/order/order";
 	}
 
+	@RequestMapping("/add")
+	public String initOrderAdd(){
+		return "/order/orderAdd";
+	}
 }

@@ -9,4 +9,6 @@ public interface UserRepository extends JpaRepository<UserVO, Long> {
 
 	@Query(value = "SELECT T.* FROM T_USER T WHERE USERID = :userid", nativeQuery = true)
 	public UserVO getUserVOByUserid(@Param("userid") String userid);
+
+
 }
