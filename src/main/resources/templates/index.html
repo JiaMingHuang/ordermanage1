@@ -28,6 +28,7 @@
     <link th:href="@{vendor/font-awesome/css/font-awesome.min.css}" rel="stylesheet" type="text/css">
     <!-- jQuery -->
     <script th:src="@{vendor/jquery/jquery.min.js}"></script>
+    <!--<script th:src="@{vendor/jquery/jquery-3.3.1.min.js}"></script>-->
 
     <!-- Bootstrap Core JavaScript -->
     <script th:src="@{vendor/bootstrap/js/bootstrap.min.js}"></script>
@@ -48,6 +49,11 @@
 
     <!-- Custom Theme JavaScript -->
     <script th:src="@{dist/js/sb-admin-2.js}"></script>
+
+    <!-- DataTables JavaScript -->
+    <script th:src="@{vendor/datatables/js/jquery.dataTables.min.js}"></script>
+    <script th:src="@{vendor/datatables-plugins/dataTables.bootstrap.min.js}"></script>
+    <script th:src="@{vendor/datatables-responsive/dataTables.responsive.js}"></script>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -154,7 +160,7 @@
             <div class="sidebar-nav navbar-collapse">
                 <ul class="nav" id="side-menu">
                     <li>
-                        <a href="##" rel="/user/page"><i class="fa fa-wrench fa-fw"></i><span> 账户管理</span></a>
+                        <a href="##" rel="/users/main"><i class="fa fa-wrench fa-fw"></i><span> 账户管理</span></a>
                     </li>
                     <li>
                         <a href="##" rel="/order/page"><i class="fa fa-files-o fa-fw"></i><span> 订单管理</span></a>

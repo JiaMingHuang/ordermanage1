@@ -21,6 +21,7 @@ public class FilterConfig {
 		registrationBean.setFilter(new AuthorFilter());
 		registrationBean.setName("authorFilter");
 		List<String> urlPatterns = new ArrayList<String>();
+		urlPatterns.add("/");
 		urlPatterns.add("/index-page/*");
 		urlPatterns.add("/order-page/*");
 		urlPatterns.add("/user-page/*");

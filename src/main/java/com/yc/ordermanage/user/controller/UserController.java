@@ -1,31 +1,56 @@
 package com.yc.ordermanage.user.controller;
 
 import com.yc.ordermanage.user.domain.UserVO;
+import com.yc.ordermanage.user.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
 
-	@RequestMapping("/page")
+	@Autowired
+	private UserService userService;
+
+	@GetMapping("/main")
 	public String initUserPage() {
-		return "/user/user";
+		return "/user/user-main";
 	}
 
-	@RequestMapping("/add")
-	public String intiUserAdd(){
-		return "/user/userAdd";
+	@GetMapping("/add")
+	public String intiUserAdd() {
+		return "/user/user-add";
 	}
 
-	@RequestMapping("/query")
+	@GetMapping("/user/{id}")
+	public void getUser() {
+	}
+
+	@PutMapping("/user")
+	public void putUser() {
+
+	}
+
+	@DeleteMapping("/user/{id}")
+	public void deleteUser() {
+	}
+
+	@PostMapping("/user")
+	public void postUser() {
+
+	}
+
+	@PostMapping("/query")
 	@ResponseBody
-	public UserVO queryUser(String username){
-		UserVO userVO = new UserVO();
-		userVO.setUserid("sysadmin");
-		return userVO;
+	public List<UserVO> queryUser(UserVO user) {
+		if (null == user.getUserid() || "".equals(user.getUserid())) {
+			return userService.findAll();
+		}
+		return userService.findByUserid(user.getUserid());
 	}
 
 }

@@ -13,6 +13,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller
 public class IndexController {
@@ -49,17 +50,17 @@ public class IndexController {
 	 */
 	@PostMapping("/login")
 	public String login(Model model, String userid, String password) {
-		UserVO userVO = userService.findByUserid(userid);
-		if (null == userVO) {
+		List<UserVO> userList = userService.findByUserid(userid);
+		if (userList.isEmpty()) {
 			model.addAttribute("errormessage", "用户不存在");
 			return "login";
 		}
-		if (!DESUtil.encryptBasedDes(password).equals(userVO.getPassword())) {
+		if (!DESUtil.encryptBasedDes(password).equals(userList.get(0).getPassword())) {
 			model.addAttribute("errormessage", "密码错误");
 			return "login";
 		}
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-		request.getSession().setAttribute("currentUser", userVO);
+		request.getSession().setAttribute("currentUser", userList.get(0));
 		return "redirect:/index-page";
 	}
 
