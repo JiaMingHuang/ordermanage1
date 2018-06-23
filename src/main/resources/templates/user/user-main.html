@@ -36,13 +36,12 @@
         $("#toUserAdd").click(function () {
             $(".modal-content").load("/user/add");
         });
-        $(document).ready(function() {
-            $("#user-main-list").DataTable({
-                responsive: true
-            });
-        });
+        // $(document).ready(function() {
+        //     $("#user-main-list").DataTable({
+        //         responsive: true
+        //     });
+        // });
         $("#user-query").click(function () {
-
             var user = {
                 userid:$("input[name='userid']").val(),
             };
@@ -72,7 +71,14 @@
                             </td>
                          </tr>
                         `;
-                        $("#user-main-list-tbody").replaceWith("<tbody id=\"user-main-list-tbody\">"+ _dom +"</tbody>");
+                    });
+                    $("#user-main-list-tbody").replaceWith(`
+                        <tbody id="user-main-list-tbody">
+                        ${_dom}
+                        </tbody>
+                    `);
+                    $("#user-main-list").DataTable({
+                        responsive: true
                     });
                 }
             });
