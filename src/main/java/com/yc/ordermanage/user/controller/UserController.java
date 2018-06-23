@@ -4,9 +4,11 @@ import com.yc.ordermanage.user.domain.UserVO;
 import com.yc.ordermanage.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Controller
@@ -21,9 +23,21 @@ public class UserController {
 		return "/user/user-main";
 	}
 
+	/**
+	 * 初始化 新增页面
+	 */
 	@GetMapping("/add")
-	public String intiUserAdd() {
+	public String initUserAdd() {
 		return "/user/user-add";
+	}
+
+	/**
+	 * 初始化 修改页面
+	 */
+	@GetMapping("/alter/{id}")
+	public String initUserAlter(Model model, @PathVariable String id) {
+		model.addAttribute("user", userService.findById(id).get());
+		return "/user/user-alter";
 	}
 
 	@GetMapping("/user/{id}")
@@ -36,7 +50,9 @@ public class UserController {
 	}
 
 	@DeleteMapping("/user/{id}")
-	public void deleteUser() {
+	@ResponseBody
+	public Boolean deleteUser(@PathVariable String id) {
+		return userService.deleteUserByid(id);
 	}
 
 	@PostMapping("/user")

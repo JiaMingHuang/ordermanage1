@@ -36,7 +36,29 @@
         $(function () {
             $("#user-query").click();
         })
+        // 删除
+        function doDeleteUser(id){
+            if(window.confirm("确认删除该记录？")){
+                $.ajax({
+                    type: "DELETE",
+                    url: `/users/user/${id}`,
+                    dataType:"TEXT",
+                    async: true,
+                    context: document.body,
+                    success: function (data) {
+                        if(data){
+                            alert("成功删除该记录！");
+                            $("#user-query").click();
+                        }
+                    },
+                    error: function (data) {
+                        // 提示删除失败
+                    }
+                });
 
+            }
+        }
+        // 用户新增弹出窗
         $("#toUserAdd").click(function () {
             $(".modal-content").load("/users/add");
         });
@@ -45,6 +67,7 @@
         //         responsive: true
         //     });
         // });
+        // 查询
         $("#user-query").click(function () {
             var user = {
                 userid:$("input[name='userid']").val(),
@@ -58,11 +81,21 @@
                 success: function (data) {
                     let _dom;
                     data.forEach((val, index, data) => {
+                        let accounttype = val.accounttype;
+                        if(accounttype == 1){
+                            accounttype =  "店铺";
+                        } else if(accounttype == 2){
+                            accounttype =  "仓库";
+                        } else if(accounttype == 3){
+                            accounttype =  "厂家";
+                        } else if(accounttype == 4){
+                            accounttype =  "电镀场";
+                        }
                         _dom += `
                         <tr>
                             <td>${val.id}</td>
                             <td>${val.userid}</td>
-                            <td>${val.accounttype}</td>
+                            <td>${accounttype}</td>
                             <td>${val.contact}</td>
                             <td>${val.managername}</td>
                             <td>${val.companyname}</td>
@@ -70,17 +103,15 @@
                             <td>${val.createdate}</td>
                             <td>${val.updatedate}</td>
                             <td>
+                                &nbsp;
                                 <p class="fa fa-edit"></p>
-                                <p class="fa fa-trash-o" rel="/users/${val.id}" "></p>
+                                &nbsp;
+                                <p class="fa fa-trash-o" onclick="doDeleteUser(${val.id});"></p>
                             </td>
                          </tr>
                         `;
                     });
-                    $("#user-main-list-tbody").replaceWith(`
-                        <tbody id="user-main-list-tbody">
-                        ${_dom}
-                        </tbody>
-                    `);
+                    $("#user-main-list-tbody").replaceWith(`<tbody id="user-main-list-tbody">${_dom}</tbody>`);
                     $("#user-main-list").DataTable({
                         responsive: true,
                         destroy:true
