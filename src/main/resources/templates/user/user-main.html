@@ -33,8 +33,12 @@
     </div>
 
     <script>
+        $(function () {
+            $("#user-query").click();
+        })
+
         $("#toUserAdd").click(function () {
-            $(".modal-content").load("/user/add");
+            $(".modal-content").load("/users/add");
         });
         // $(document).ready(function() {
         //     $("#user-main-list").DataTable({
@@ -78,7 +82,8 @@
                         </tbody>
                     `);
                     $("#user-main-list").DataTable({
-                        responsive: true
+                        responsive: true,
+                        destroy:true
                     });
                 }
             });

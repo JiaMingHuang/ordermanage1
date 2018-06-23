@@ -24,27 +24,24 @@ public class AuthorFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		HttpServletResponse httpResponse = (HttpServletResponse) response;
-		// logger.info("--login auth--");
-		// logger.info(httpRequest.getRequestURI());
+//		logger.info("--login auth--");
+//		logger.info(httpRequest.getRequestURI());
 
 		String url = httpRequest.getRequestURI().substring(httpRequest.getContextPath().length());
 		if (url.startsWith("/") && url.length() > 1) {
 			url = url.substring(1);
 		}
-		// 登陆、错误页面不拦截
-		if (url.equals("login-page") || url.equals("loginerror-page")) {
-			chain.doFilter(httpRequest,httpResponse);
-			return;
-		}
 
 		HttpSession session = httpRequest.getSession();
 		UserVO userVO = (UserVO) session.getAttribute("currentUser");
-		if (userVO == null) {
+		if ("login-page".equals(url)) {
+			chain.doFilter(httpRequest, httpResponse);
+		} else if (userVO == null) {
 			// String basePath = httpRequest.getScheme() + "://" + httpRequest.getServerName() + ":" + httpRequest.getServerPort();
 			httpResponse.sendRedirect("loginerror-page");
 		} else {
 			session.setAttribute("currentUser", userVO);
-			chain.doFilter(httpRequest,httpResponse);
+			chain.doFilter(httpRequest, httpResponse);
 		}
 
 	}

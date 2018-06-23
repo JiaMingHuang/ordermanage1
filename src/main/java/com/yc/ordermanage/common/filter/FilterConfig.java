@@ -22,10 +22,19 @@ public class FilterConfig {
 		registrationBean.setName("authorFilter");
 		List<String> urlPatterns = new ArrayList<String>();
 		urlPatterns.add("/");
+
+//		urlPatterns.add("/login-page");
+		urlPatterns.add("/index-page");
+		urlPatterns.add("/main-page");
+		urlPatterns.add("/login-page/*");
 		urlPatterns.add("/index-page/*");
-		urlPatterns.add("/order-page/*");
-		urlPatterns.add("/user-page/*");
 		urlPatterns.add("/main-page/*");
+
+		urlPatterns.add("/order/*");
+		urlPatterns.add("/users/*");
+		urlPatterns.add("/storehouse/*");
+
+
 		registrationBean.setUrlPatterns(urlPatterns);
 		registrationBean.setOrder(1);
 		return registrationBean;

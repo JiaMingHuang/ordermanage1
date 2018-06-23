@@ -81,7 +81,15 @@
     </div>
 
 </body>
-<script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    $(function () {
+        var currentUser = /*[[${session.currentUser}]]*/;
+        if(currentUser != null){
+            window.location.href = "/index-page";
+        }
+    });
+    /*]]>*/
     $('#loginbutton').click(function () {
         var userid = $("#userid").val();
         var password = $("#password").val();
