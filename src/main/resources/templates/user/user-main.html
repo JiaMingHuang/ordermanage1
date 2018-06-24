@@ -7,7 +7,7 @@
             <input class="form-control" name="userid">
         </div>
         <button id="user-query" type="button" class="btn btn-primary">查询</button>
-        <button id="toUserAdd" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+        <button id="to-user-add" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
             新增用户
         </button>
     </div>
@@ -43,7 +43,7 @@
                     type: "DELETE",
                     url: `/users/user/${id}`,
                     dataType:"TEXT",
-                    async: true,
+                    async: false,
                     context: document.body,
                     success: function (data) {
                         if(data){
@@ -59,9 +59,14 @@
             }
         }
         // 用户新增弹出窗
-        $("#toUserAdd").click(function () {
+        $("#to-user-add").click(function () {
             $(".modal-content").load("/users/add");
         });
+        // 用户修改弹出窗
+        function doAlterUser(id){
+            $(".modal-content").load(`/users/alter/${id}`);
+        }
+
         // $(document).ready(function() {
         //     $("#user-main-list").DataTable({
         //         responsive: true
@@ -76,7 +81,7 @@
                 type: "POST",
                 data: user,
                 url: `/users/query`,
-                async: true,
+                async: false,
                 context: document.body,
                 success: function (data) {
                     let _dom;
@@ -104,9 +109,9 @@
                             <td>${val.updatedate}</td>
                             <td>
                                 &nbsp;
-                                <p class="fa fa-edit"></p>
+                                <button class="fa fa-edit" data-toggle="modal" data-target="#myModal" onclick="doAlterUser(${val.id});"></button>
                                 &nbsp;
-                                <p class="fa fa-trash-o" onclick="doDeleteUser(${val.id});"></p>
+                                <button class="fa fa-trash-o" onclick="doDeleteUser(${val.id});"></button>
                             </td>
                          </tr>
                         `;

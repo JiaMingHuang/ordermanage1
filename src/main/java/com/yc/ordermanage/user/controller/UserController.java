@@ -35,7 +35,7 @@ public class UserController {
 	 * 初始化 修改页面
 	 */
 	@GetMapping("/alter/{id}")
-	public String initUserAlter(Model model, @PathVariable String id) {
+	public String initUserAlter(Model model, @PathVariable Long id) {
 		model.addAttribute("user", userService.findById(id).get());
 		return "/user/user-alter";
 	}
@@ -44,20 +44,33 @@ public class UserController {
 	public void getUser() {
 	}
 
+	/**
+	 * 新增用户
+	 */
 	@PutMapping("/user")
-	public void putUser() {
-
+	@ResponseBody
+	public Boolean putUser(UserVO userVO) {
+		userService.createUser(userVO);
+		return true;
 	}
 
+	/**
+	 * 删除用户
+	 */
 	@DeleteMapping("/user/{id}")
 	@ResponseBody
-	public Boolean deleteUser(@PathVariable String id) {
+	public Boolean deleteUser(@PathVariable Long id) {
 		return userService.deleteUserByid(id);
 	}
 
+	/**
+	 * 修改用户
+	 */
 	@PostMapping("/user")
-	public void postUser() {
-
+	@ResponseBody
+	public Boolean postUser(UserVO userVO) {
+		userService.updateUser(userVO);
+		return true;
 	}
 
 	@PostMapping("/query")

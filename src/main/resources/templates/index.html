@@ -187,5 +187,17 @@
     $("#side-menu li a").click(function(){
         $("#page-wrapper").load($(this).attr("rel"));
     });
+    /**
+     * 序列化表单对象
+     */
+    jQuery.prototype.serializeObject=function(){
+        var obj=new Object();
+        $.each(this.serializeArray(),function(index,param){
+            if(!(param.name in obj)){
+                obj[param.name]=param.value;
+            }
+        });
+        return obj;
+    };
 </script>
 </html>

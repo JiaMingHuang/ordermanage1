@@ -8,13 +8,16 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface UserRepository extends JpaRepository<UserVO, String> {
+public interface UserRepository extends JpaRepository<UserVO, Long> {
 
 	@Query(value = "SELECT T.* FROM T_USER T WHERE USERID = :userid", nativeQuery = true)
 	public List<UserVO> getUserVOByUserid(@Param("userid") String userid);
 
 	@Modifying
-	public void deleteById(String id);
+	@Override
+	public void deleteById(Long id);
 
-
+	@Modifying
+	@Override
+	public UserVO save(UserVO userVO);
 }

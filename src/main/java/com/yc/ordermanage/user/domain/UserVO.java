@@ -1,9 +1,6 @@
 package com.yc.ordermanage.user.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -14,7 +11,8 @@ import java.util.Date;
 public class UserVO {
 
 	@Id
-	private String id;
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private Long id;
 	/**
 	 * 用户名
 	 */
@@ -81,11 +79,11 @@ public class UserVO {
 	@Column
 	private Integer delflag;
 
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -167,5 +165,22 @@ public class UserVO {
 
 	public void setDelflag(Integer delflag) {
 		this.delflag = delflag;
+	}
+
+	@Override
+	public String toString() {
+		return "UserVO{" +
+				"id='" + id + '\'' +
+				", userid='" + userid + '\'' +
+				", password='" + password + '\'' +
+				", accounttype=" + accounttype +
+				", contact=" + contact +
+				", managername='" + managername + '\'' +
+				", companyname='" + companyname + '\'' +
+				", address='" + address + '\'' +
+				", createdate=" + createdate +
+				", updatedate=" + updatedate +
+				", delflag=" + delflag +
+				'}';
 	}
 }

@@ -1,0 +1,81 @@
+<div class="panel panel-default">
+    <div class="panel-heading">修改用户</div>
+    <div class="panel-body">
+        <form id="user-alter-form">
+            <div class="form-group">
+                <label>账户类型：</label>
+                <label class="radio-inline">
+                    <input type="radio" name="accounttype" th:checked="${user.accounttype} == 1" value="1">店
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="accounttype" th:checked="${user.accounttype} == 2" value="2">仓库
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="accounttype" th:checked="${user.accounttype} == 3" value="3">厂家
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="accounttype" th:checked="${user.accounttype} == 4" value="4">电镀厂
+                </label>
+            </div>
+            <input id="id" name="id" th:value="${user.id}" type="hidden">
+            <div class="form-group">
+                <label>用户编码：</label>
+                <input class="form-control" name="userid" th:value="${user.userid}" id="userid" disabled>
+            </div>
+            <!--
+            <div class="form-group">
+                <label>密码：</label>
+                <input class="form-control" name="password" th:value="${user.password}" id="password" type="password">
+            </div>
+            <div class="form-group">
+                <label>确认密码：</label>
+                <input class="form-control" name="confirmpassword" th:value="${user.confirmpassword}" id="confirmpassword" type="password">
+            </div>
+            -->
+            <div class="form-group">
+                <label>负责人名称：</label>
+                <input class="form-control" name="managername" th:value="${user.managername}" id="managername">
+            </div>
+            <div class="form-group">
+                <label>公司名称：</label>
+                <input class="form-control" name="companyname" th:value="${user.companyname}" id="companyname">
+            </div>
+            <div class="form-group">
+                <label>联系电话：</label>
+                <input class="form-control" name="contact" th:value="${user.contact}" id="contact">
+            </div>
+            <div class="form-group">
+                <label>地&nbsp;&nbsp;址：</label>
+                <input class="form-control" name="address" th:value="${user.address}" id="address">
+            </div>
+        </form>
+    </div>
+    <div class="panel-footer">
+        <button type="button" class="btn btn-primary" id="user-alter">保存</button>
+    </div>
+</div>
+<script>
+    $("#user-alter").click(function () {
+        var userVO = $("#user-alter-form").serializeObject();// 序列化表单内容
+        console.log(userVO);
+        $.ajax({
+            type: "POST",
+            url: `/users/user`,
+            data: userVO,
+            dataType:"json",
+            async: false,
+            context: document.body,
+            success: function (data) {
+                if(data){
+                    alert("修改成功！");
+                    $("#myModal").click();
+                    $("#user-query").click();
+                }
+            },
+            error: function (data) {
+                // 提示新增失败
+            }
+        });
+    });
+
+</script>
