@@ -16,6 +16,7 @@
 						name="name_spec_color">
 				</div>
 				<button id="storehouse-query" type="button" class="btn btn-primary">查询</button>
+				<button id="storehouse-add" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">新增库存</button>
 			</div>
 			<div class="panel-heading">库存信息列表</div>
 			<div class="panel-body">
@@ -104,4 +105,8 @@
 
             }
     	}
+    	
+    	$("#storehouse-add").click(function () {
+            $(".modal-content").load("/storehouse/add");
+        });
     </script>

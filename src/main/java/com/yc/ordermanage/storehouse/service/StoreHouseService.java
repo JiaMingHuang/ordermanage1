@@ -15,12 +15,12 @@ public class StoreHouseService {
 	@Autowired
 	private StoreHouseRepository storeHouseRepository;
 	
-	public StoreHouseVO selectById(String id) {
+	public StoreHouseVO selectById(Long id) {
 		return storeHouseRepository.selectById(id);
 	}
 	
 	@Transactional
-	public Boolean deleteById(String id) {
+	public Boolean deleteById(Long id) {
 		storeHouseRepository.deleteById(id);
 		return true;
 	}
@@ -33,5 +33,9 @@ public class StoreHouseService {
 	public List<StoreHouseVO> findStoreHouseByCondition(String name_spec_color) {
 		// TODO Auto-generated method stub
 		return storeHouseRepository.findStoreHouseByCondition(name_spec_color);
+	}
+
+	public void save(StoreHouseVO storeHouseVO) {
+		storeHouseRepository.save(storeHouseVO);
 	}
 }

@@ -4,15 +4,17 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "STOREHOUSE")
-public class StoreHouseVO {
+public class StoreHouseVO{
 
 	@Id
-	private String id;
+	@GeneratedValue
+	private Long id;
 	@Column
 	private String name_spec_color;
 	@Column
@@ -24,11 +26,11 @@ public class StoreHouseVO {
 	@Column
 	private String delFlag;
 
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

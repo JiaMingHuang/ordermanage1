@@ -1,5 +1,6 @@
 package com.yc.ordermanage.storehouse.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -43,13 +45,13 @@ public class StoreHouseController {
 	
 	@RequestMapping("selectById/{id}")
 	@ResponseBody
-	public StoreHouseVO selectById(@PathVariable String id) {
+	public StoreHouseVO selectById(@PathVariable Long id) {
 		return storeHouseService.selectById(id);
 	}
 	
 	@DeleteMapping("deleteById/{id}")
 	@ResponseBody
-	public Boolean deleteById(@PathVariable String id) {
+	public Boolean deleteById(@PathVariable Long id) {
 		return storeHouseService.deleteById(id);
 	}
 	
@@ -60,5 +62,20 @@ public class StoreHouseController {
 			return storeHouseService.selectAll();
 		}
 		return storeHouseService.findStoreHouseByCondition(storeHouseVO.getName_spec_color());
+	}
+	
+	/**
+	 * 初始化 新增页面
+	 */
+	@GetMapping("/add")
+	public String initStoreHouseAdd() {
+		return "/storehouse/storehouse-form";
+	}
+	
+	@RequestMapping("/storehouseSave")
+	public String storehouseSave(StoreHouseVO storeHouseVO){
+		storeHouseVO.setCreateDate(new Date());
+		storeHouseService.save(storeHouseVO);
+		return "/storehouse/storehouse-table";
 	}
 }

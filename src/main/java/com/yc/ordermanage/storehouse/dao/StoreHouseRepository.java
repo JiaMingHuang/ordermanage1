@@ -15,12 +15,10 @@ import com.yc.ordermanage.storehouse.domain.StoreHouseVO;
 public interface StoreHouseRepository extends JpaRepository<StoreHouseVO, Long>{
 
 	@Query(value = "SELECT T.* FROM STOREHOUSE T WHERE ID = ?1", nativeQuery = true)
-	public StoreHouseVO selectById(String id);
+	public StoreHouseVO selectById(Long id);
 	
 	@Modifying
-	/*@Transactional
-	@Query(value = "DELETE FROM STOREHOUSE WHERE ID = ?1", nativeQuery = true)*/
-	public void deleteById(String id);
+	public void deleteById(Long id);
 
 	@Query(value = "SELECT T.* FROM STOREHOUSE T", nativeQuery = true)
 	public List<StoreHouseVO> selectAll();
