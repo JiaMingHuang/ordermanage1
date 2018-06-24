@@ -18,9 +18,9 @@ public interface StoreHouseRepository extends JpaRepository<StoreHouseVO, Long>{
 	public StoreHouseVO selectById(String id);
 	
 	@Modifying
-	@Transactional
-	@Query(value = "DELETE FROM STOREHOUSE WHERE ID = ?1", nativeQuery = true)
-	public int deleteById(String id);
+	/*@Transactional
+	@Query(value = "DELETE FROM STOREHOUSE WHERE ID = ?1", nativeQuery = true)*/
+	public void deleteById(String id);
 
 	@Query(value = "SELECT T.* FROM STOREHOUSE T", nativeQuery = true)
 	public List<StoreHouseVO> selectAll();

@@ -20,8 +20,9 @@ public class StoreHouseService {
 	}
 	
 	@Transactional
-	public int deleteById(String id) {
-		return storeHouseRepository.deleteById(id);
+	public Boolean deleteById(String id) {
+		storeHouseRepository.deleteById(id);
+		return true;
 	}
 
 	public List<StoreHouseVO> selectAll() {

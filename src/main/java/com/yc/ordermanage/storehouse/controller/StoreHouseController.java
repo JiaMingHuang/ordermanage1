@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -46,11 +47,10 @@ public class StoreHouseController {
 		return storeHouseService.selectById(id);
 	}
 	
-	@RequestMapping("deleteById/{id}")
+	@DeleteMapping("deleteById/{id}")
 	@ResponseBody
-	public int deleteById(@PathVariable String id) {
-		storeHouseService.deleteById(id);
-		return 100;
+	public Boolean deleteById(@PathVariable String id) {
+		return storeHouseService.deleteById(id);
 	}
 	
 	@RequestMapping("/findStoreHouseByCondition")

@@ -11,8 +11,8 @@ public class OrderController {
 		return "/order/order";
 	}
 
-	@RequestMapping("/add")
-	public String initOrderAdd(){
-		return "/order/orderAdd";
+	@RequestMapping("/orderForm")
+	public String orderForm(){
+		return "/order/order-form";
 	}
 }

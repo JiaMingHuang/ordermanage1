@@ -1,0 +1,47 @@
+<div class="col-lg-8">
+	<div class="panel panel-default">
+		<div class="panel-heading">Kitchen Sink</div>
+		<!-- /.panel-heading -->
+		<div class="panel-body">
+			<div class="table-responsive">
+				<table class="table table-striped table-bordered table-hover">
+					<thead>
+						<tr>
+							<th>First Name</th>
+							<th>Last Name</th>
+							<th>Username</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody id="order-detail-tbody">
+					</tbody>
+
+				</table>
+				<button type="button" class="btn btn-primary" onclick="addRow()">新增商品</button>
+			</div>
+			<!-- /.table-responsive -->
+		</div>
+		<!-- /.panel-body -->
+	</div>
+	<!-- /.panel -->
+</div>
+<script type="text/javascript">
+	function addRow() {
+		var tb = document.getElementById("order-detail-tbody");
+		var row1 = tb.insertRow();
+		var cell1 = row1.insertCell();
+		var cell2 = row1.insertCell();
+		var cell3 = row1.insertCell();
+		var cell4 = row1.insertCell();
+		cell1.innerHTML = "<input type='text'>";
+		cell2.innerHTML = "<input type='text'>";
+		cell3.innerHTML = "<input type='text'>"; 
+		cell4.innerHTML = "<button type='button' class='btn btn-primary' onclick='deleteRow(this)'>删除</button>"; 
+	}
+	
+	function deleteRow(obj){
+		var index=obj.parentNode.rowIndex;
+	    var table = document.getElementById("order-detail-tbody");
+	    table.deleteRow(index);
+	}
+</script>
