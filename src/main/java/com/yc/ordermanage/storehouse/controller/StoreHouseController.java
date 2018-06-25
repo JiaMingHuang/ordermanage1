@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -33,8 +32,6 @@ public class StoreHouseController {
 	
 	@RequestMapping("/initStoreHousePage")
 	public String initStoreHousePage(Model model) {
-		List<StoreHouseVO> storeHouseVOs = storeHouseService.selectAll();
-		model.addAttribute("list",storeHouseVOs);
 		return "/storehouse/storehouse-table";
 	}
 	

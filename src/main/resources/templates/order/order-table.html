@@ -1,6 +1,6 @@
 <div class="row">
 	<div class="col-lg-12">
-		<h1 class="page-header">柏丽水晶库存</h1>
+		<h1 class="page-header">柏丽水晶订单管理</h1>
 	</div>
 	<!-- /.col-lg-12 -->
 </div>
@@ -8,31 +8,29 @@
 <div class="row">
 	<div class="col-lg-12">
 		<div class="panel panel-default">
-			<div class="panel-heading">库存信息管理</div>
+			<div class="panel-heading">订单信息管理</div>
 			<!-- /.panel-heading -->
 			<div class="panel-body">
-				<div class="form-group">
-					<label>品名规格颜色：</label> <input class="form-control"
-						name="name_spec_color">
-				</div>
-				<button id="storehouse-query" type="button" class="btn btn-primary">查询</button>
-				<button id="storehouse-add" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">新增库存</button>
+				<button id="order-add" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">新增订单</button>
 			</div>
-			<div class="panel-heading">库存信息列表</div>
+			<div class="panel-heading">订单信息列表</div>
 			<div class="panel-body">
 				<table width="100%"
 					class="table table-striped table-bordered table-hover"
-					id="storehouse-table">
+					id="order-table">
 					<thead>
 						<tr>
 							<th>序号</th>
-							<th>品名规格颜色</th>
-							<th>数量</th>
-							<th>创建时间</th>
+							<th>订单编号</th>
+							<th>订单类型</th>
+							<th>客户名称</th>
+							<th>联系电话</th>
+							<th>客户要求交货时间</th>
+							<th>工厂交货时间</th>
 							<th>操作</th>
 						</tr>
 					</thead>
-					<tbody id="storehouse-tbody">
+					<tbody id="order-tbody">
 					</tbody>
 				</table>
 			</div>
@@ -44,17 +42,10 @@
  $(document).ready(function() {
 	initData();
 }); 
-    $("#storehouse-query").click(function () {
-    	initData();
-    });
     	function initData() {
-            var storehouse = {
-            		name_spec_color:$("input[name='name_spec_color']").val(),
-            };
             $.ajax({
                 type: "POST",
-                data: storehouse,
-                url: `/storehouse/findStoreHouseByCondition`,
+                url: `/order/findAll`,
                 async: true,
                 context: document.body,
                 success: function (data) {
@@ -63,9 +54,12 @@
                         _dom += `
                         <tr>
                             <td>${val.id}</td>
-                            <td>${val.name_spec_color}</td>
-                            <td>${val.amount}</td>
-                            <td>${val.createDate}</td>
+                            <td>${val.ordernumber}</td>
+                            <td>${val.ordertype}</td>
+                            <td>${val.clientname}</td>
+                            <td>${val.contact}</td>
+                            <td>${val.clientdeliverytime}</td>
+                            <td>${val.factorydeliverytime}</td>
                             <td>
                             	&nbsp;
                                 <p class="fa fa-edit"></p>
@@ -75,8 +69,8 @@
                          </tr>
                         `;
                     });
-                    $("#storehouse-tbody").replaceWith(`<tbody id="storehouse-tbody">${_dom}</tbody>`);
-                    $("#storehouse-table").DataTable({
+                    $("#order-tbody").replaceWith(`<tbody id="order-tbody">${_dom}</tbody>`);
+                    $("#order-table").DataTable({
                         responsive: true,
                         destroy:true
                     });
@@ -88,14 +82,14 @@
     		if(window.confirm("确认删除该记录？")){
                 $.ajax({
                     type: "DELETE",
-                    url: `/storehouse/deleteById/${id}`,
+                    url: `/order/deleteById/${id}`,
                     dataType:"TEXT",
                     async: true,
                     context: document.body,
                     success: function (data) {
                         if(data){
                             alert("成功删除该记录！");
-                            $("#storehouse-query").click();
+                            $("#order-query").click();
                         }
                     },
                     error: function (data) {
@@ -106,7 +100,7 @@
             }
     	}
     	
-    	$("#storehouse-add").click(function () {
-            $(".modal-content").load("/storehouse/add");
+    	$("#order-add").click(function () {
+            $(".modal-content").load("/order/add");
         });
     </script>
