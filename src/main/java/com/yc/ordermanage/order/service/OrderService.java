@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.yc.ordermanage.order.dao.OrderRepository;
 import com.yc.ordermanage.order.domain.OrderVO;
@@ -15,8 +16,13 @@ public class OrderService {
 	private OrderRepository orderRepository;
 	
 	public List<OrderVO> findAll() {
-		// TODO Auto-generated method stub
 		return orderRepository.findAll();
+	}
+
+	@Transactional
+	public Boolean deleteById(Long id) {
+		orderRepository.deleteById(id);
+		return true;
 	}
 
 }

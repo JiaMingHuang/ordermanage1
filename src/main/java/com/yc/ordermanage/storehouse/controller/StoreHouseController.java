@@ -35,11 +35,6 @@ public class StoreHouseController {
 		return "/storehouse/storehouse-table";
 	}
 	
-	@RequestMapping("skipToAdd")
-	public String skipToAdd() {
-		return "/storehouse/addGoods";
-	}
-	
 	@RequestMapping("selectById/{id}")
 	@ResponseBody
 	public StoreHouseVO selectById(@PathVariable Long id) {
