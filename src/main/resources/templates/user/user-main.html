@@ -2,9 +2,9 @@
     <div class="panel-heading">账户信息管理</div>
 
     <div class="panel-body">
-        <div class="form-group">
+        <div class="form-group widthhelf">
             <label>用户名：</label>
-            <input class="form-control" name="userid">
+            <input class="form-control widthhelf" name="userid">
         </div>
         <button id="user-query" type="button" class="btn btn-primary">查询</button>
         <button id="to-user-add" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
@@ -77,6 +77,7 @@
             var user = {
                 userid:$("input[name='userid']").val(),
             };
+
             $.ajax({
                 type: "POST",
                 data: user,
@@ -101,12 +102,12 @@
                             <td>${val.id}</td>
                             <td>${val.userid}</td>
                             <td>${accounttype}</td>
-                            <td>${val.contact}</td>
-                            <td>${val.managername}</td>
-                            <td>${val.companyname}</td>
-                            <td>${val.address}</td>
-                            <td>${val.createdate}</td>
-                            <td>${val.updatedate}</td>
+                            <td>${val.contact == null ? "--" : val.contact}</td>
+                            <td>${val.managername == null ? "--" : val.managername}</td>
+                            <td>${val.companyname == null ? "--" : val.companyname}</td>
+                            <td>${val.address == null ? "--" : val.address}</td>
+                            <td>${val.createdate == null ? "--" : val.createdate}</td>
+                            <td>${val.updatedate  == null ? "--" : val.updatedate}</td>
                             <td>
                                 &nbsp;
                                 <button class="fa fa-edit" data-toggle="modal" data-target="#myModal" onclick="doAlterUser(${val.id});"></button>
