@@ -106,8 +106,8 @@
                             <td>${val.managername == null ? "--" : val.managername}</td>
                             <td>${val.companyname == null ? "--" : val.companyname}</td>
                             <td>${val.address == null ? "--" : val.address}</td>
-                            <td>${val.createdate == null ? "--" : val.createdate}</td>
-                            <td>${val.updatedate  == null ? "--" : val.updatedate}</td>
+                            <td>${val.createdate == null ? "--" : new Date(val.createdate).Format("yyyy-MM-dd HH:mm:ss")}</td>
+                            <td>${val.updatedate  == null ? "--" : new Date(val.updatedate).Format("yyyy-MM-dd HH:mm:ss")}</td>
                             <td>
                                 &nbsp;
                                 <button class="fa fa-edit" data-toggle="modal" data-target="#myModal" onclick="doAlterUser(${val.id});"></button>
