@@ -11,11 +11,11 @@
 			<div class="panel-heading">库存信息管理</div>
 			<!-- /.panel-heading -->
 			<div class="panel-body">
-				<div class="form-group">
+				<!-- <div class="form-group">
 					<label>品名规格颜色：</label> <input class="form-control"
 						name="name_spec_color">
 				</div>
-				<button id="storehouse-query" type="button" class="btn btn-primary">查询</button>
+				<button id="storehouse-query" type="button" class="btn btn-primary">查询</button> -->
 				<button id="storehouse-add" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">新增库存</button>
 			</div>
 			<div class="panel-heading">库存信息列表</div>
@@ -44,16 +44,9 @@
  $(document).ready(function() {
 	initData();
 }); 
-    $("#storehouse-query").click(function () {
-    	initData();
-    });
     	function initData() {
-            var storehouse = {
-            		name_spec_color:$("input[name='name_spec_color']").val(),
-            };
             $.ajax({
                 type: "POST",
-                data: storehouse,
                 url: `/storehouse/findStoreHouseByCondition`,
                 async: true,
                 context: document.body,
@@ -68,7 +61,7 @@
                             <td>${val.createDate}</td>
                             <td>
                             	&nbsp;
-                                <button class="fa fa-edit"></button>
+                                <button class="fa fa-edit" data-toggle="modal" data-target="#myModal" onclick="modifyStoreHouse(${val.id});"></button>
                                 &nbsp;
                                 <button class="fa fa-trash-o" onclick="deleteById(${val.id});"></button>
                             </td>
@@ -95,7 +88,7 @@
                     success: function (data) {
                         if(data){
                             alert("成功删除该记录！");
-                            $("#storehouse-query").click();
+                            initData()
                         }
                     },
                     error: function (data) {
@@ -109,4 +102,8 @@
     	$("#storehouse-add").click(function () {
             $(".modal-content").load("/storehouse/add");
         });
+    	
+    	function modifyStoreHouse(id){
+            $(".modal-content").load(`/storehouse/modifyStoreHouse/${id}`);
+        }
     </script>

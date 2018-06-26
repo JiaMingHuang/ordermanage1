@@ -10,6 +10,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -69,5 +71,18 @@ public class StoreHouseController {
 		storeHouseVO.setCreateDate(new Date());
 		storeHouseService.save(storeHouseVO);
 		return "/storehouse/storehouse-table";
+	}
+	
+	@GetMapping("/modifyStoreHouse/{id}")
+	public String modifyStoreHouse(Model model, @PathVariable Long id) {
+		model.addAttribute("storehouse", storeHouseService.findById(id).get());
+		return "/storehouse/storehouse-info";
+	}
+	
+	@PostMapping("/update")
+	@ResponseBody
+	public Boolean updateStoreHouse(StoreHouseVO storeHouseVO) {
+		storeHouseService.updateStoreHouse(storeHouseVO);
+		return true;
 	}
 }

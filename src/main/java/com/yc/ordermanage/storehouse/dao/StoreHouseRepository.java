@@ -24,4 +24,8 @@ public interface StoreHouseRepository extends JpaRepository<StoreHouseVO, Long>{
 
 	@Query(value = "SELECT T.* FROM STOREHOUSE T WHERE T.NAME_SPEC_COLOR = :name_spec_color", nativeQuery = true)
 	public List<StoreHouseVO> findStoreHouseByCondition(@Param("name_spec_color") String name_spec_color);
+	
+	@Modifying
+	@Override
+	public StoreHouseVO save(StoreHouseVO storeHouseVO);
 }

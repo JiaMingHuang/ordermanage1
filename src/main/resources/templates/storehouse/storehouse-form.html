@@ -28,7 +28,11 @@ function test(){
         processData:false,
         contentType:false,
         success:function(data){
-            console.log("over..");
+        	if (data) {
+                alert("新增成功！");
+                $("#myModal").click();
+                initData();
+            }
         },
         error:function(e){
             alert("错误！！");

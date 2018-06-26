@@ -58,4 +58,8 @@ public class UserService {
 		beforeUserVO.setAddress(userVO.getAddress());
 		return userRepository.save(beforeUserVO);
 	}
+	
+	public List<UserVO> getFactory(int type ){
+		return userRepository.getFactory(type);
+	}
 }

@@ -1,0 +1,18 @@
+.order_body{
+	margin-bottom: 50px;
+}
+.delete_column{
+	width: 70px;
+}
+.save_btn_container{
+	text-align: right;
+}
+.save_btn_container button{
+	width: 100px;
+}
+.part_header{
+	margin-top: 0;
+}
+.form-horizontal .form-group .radio_btn{
+	margin: 11px 5px 0 18px;
+}

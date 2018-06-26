@@ -20,4 +20,7 @@ public interface UserRepository extends JpaRepository<UserVO, Long> {
 	@Modifying
 	@Override
 	public UserVO save(UserVO userVO);
+
+	@Query(value = "SELECT T.* FROM T_USER T WHERE ACCOUNTTYPE = :accounttype", nativeQuery = true)
+	public List<UserVO> getFactory(int type);
 }
