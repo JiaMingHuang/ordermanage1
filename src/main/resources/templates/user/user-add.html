@@ -77,13 +77,13 @@
             return;
         }
         var inputArr = $("#user-add-form div").find("input");
-        $.each(inputArr, function() {
-            var label = $(this).parent().find("label")[0];
-            if($(this).val() == ''){
+        for (var i = 0;i < inputArr.length;i++) {
+            var label = $(inputArr[i]).parent().find("label")[0];
+            if($(inputArr[i]).val() == ''){
                 alert(label.innerHTML + '不能为空！');
                 return false;
             }
-        });
+        }
         var userVO = $("#user-add-form").serializeObject();// 序列化表单内容
         $.ajax({
             type: "PUT",
