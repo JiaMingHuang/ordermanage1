@@ -1,5 +1,6 @@
 package com.yc.ordermanage.order.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,21 @@ public class OrderService {
 	 */
 	public List<String> findNoOrderClientname(){
 		return orderRepository.findNoOrderClientname();
+	}
+
+	/**
+	* @Title: addOrder 
+	* @Description: TODO 
+	* @param orderVO
+	* @return OrderVO
+	* @author kaming.Van.hwang
+	* @date 2018年6月28日上午1:43:24
+	 */
+	@Transactional
+	public OrderVO addOrder(OrderVO orderVO) {
+		orderVO.setCreatedate(new Date());
+		orderVO.setUpdatedate(new Date());
+		return orderRepository.save(orderVO);
 	}
 
 }

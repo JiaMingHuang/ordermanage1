@@ -8,11 +8,13 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yc.ordermanage.order.domain.OrderVO;
 import com.yc.ordermanage.order.service.OrderService;
+import com.yc.ordermanage.user.domain.UserVO;
 import com.yc.ordermanage.user.service.UserService;
 @RequestMapping("/order")
 @Controller
@@ -29,8 +31,8 @@ public class OrderController {
 	}
 
 	@RequestMapping("/add")
-	public String orderForm(Model model){
-		model.addAttribute("factory", userService.getFactory(3));
+	public String orderForm(){
+		//model.addAttribute("factory", userService.getFactory(3));
 		return "/order/order-form";
 	}
 	
@@ -45,5 +47,20 @@ public class OrderController {
 	@ResponseBody
 	public Boolean deleteById(@PathVariable Long id) {
 		return orderService.deleteById(id);
+	}
+	
+	/**
+	* @Title: putUser 
+	* @Description: TODO 
+	* @param orderVO
+	* @return Boolean
+	* @author kaming.Van.hwang
+	* @date 2018年6月28日上午1:39:34
+	 */
+	@PutMapping("/form")
+	@ResponseBody
+	public Boolean putUser(OrderVO orderVO) {
+		orderService.addOrder(orderVO);
+		return true;
 	}
 }

@@ -18,4 +18,8 @@ public interface OrderRepository extends JpaRepository<OrderVO, Long> {
 	 */
 	@Query(value = "SELECT DISTINCT A.CLIENTNAME FROM T_ORDER A WHERE NOT EXISTS (SELECT 1 FROM T_ORDER B WHERE A.CLIENTNAME = B.CLIENTNAME AND B.CREATEDATE >= SUBDATE(CURDATE(),INTERVAL 3 MONTH))", nativeQuery = true)
 	public List<String> findNoOrderClientname();
+	
+	@Modifying
+	@Override
+	public OrderVO save(OrderVO orderVO);
 }

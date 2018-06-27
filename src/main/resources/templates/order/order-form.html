@@ -1,34 +1,34 @@
 
 <div class="panel-body">
-
+<form id="order-add-form">
 	<div class="form-group">
-		<label>订单类型：</label> <input class="radio_btn" type="radio" name="sex"
-			value="male" checked>工厂订单 <input class="radio_btn"
-			type="radio" name="sex" value="female">电镀厂订单
+		<label>订单类型：</label> 
+		<input class="radio_btn" type="radio" name="ordertype" value="1" checked>工厂订单 
+		<input class="radio_btn" type="radio" name="ordertype" value="2">电镀厂订单
 	</div>
 	<div class="form-group">
 		<label>订单编号：</label> <input class="form-control"
-			name="name_spec_color">
+			name="ordernumber">
 	</div>
 	<div class="form-group">
-		<label>客户名称：</label> <input class="form-control" name="amount">
+		<label>客户名称：</label> <input class="form-control" name="clientname">
 	</div>
 	<div class="form-group">
-		<label>客户要求发货时间：</label> <input class="form-control" name="amount">
+		<label>客户要求发货时间：</label> <input class="form-control" name="clientdeliverytime">
 	</div>
 	<div class="form-group">
-		<label>工厂交货时间：</label> <input class="form-control" name="amount">
+		<label>工厂交货时间：</label> <input class="form-control" name="factorydeliverytime">
 	</div>
 	<div class="form-group">
-		<label>客户联系电话：</label> <input class="form-control" name="amount">
+		<label>客户联系电话：</label> <input class="form-control" name="contact">
 	</div>
 	<div class="form-group">
-		<label>送货地址：</label> <input class="form-control" name="amount">
+		<label>送货地址：</label> <input class="form-control" name="address">
 	</div>
 	<div class="form-group">
-		<label>退货重镀原因：</label> <input class="form-control" name="amount">
+		<label>退货重镀原因：</label> <input class="form-control" name="reason">
 	</div>
-
+</form>
 	<div class="order_table table-responsive">
 		<div class="page-header part_header">
 			<h1>
@@ -38,8 +38,7 @@
 		<!-- ======================================================================================== -->
 		<div class="panel-body">
 
-			<form id="testform">
-				<div class="form-group">
+				<div class="form-group" id="testform">
 					<label>品名规格颜色：</label> <input class="form-control" name="a">
 					<label>单位：</label> <input class="form-control" name="b">
 					<label>单价：</label> <input class="form-control" name="c">
@@ -47,7 +46,6 @@
 					<label>总价：</label> <input class="form-control" name="c">
 					<label>工厂：</label> <input class="form-control" name="c">
 					</div>
-			</form>
 			<button id="add" type="button" class="btn btn-primary"
 				onclick="test()">add</button>
 		</div>
@@ -72,8 +70,9 @@
 		<!-- ======================================================================================== -->
 	</div>
 	<div class="save_btn_container">
-		<button class="btn btn-success btn-lg">保存</button>
+		<button type="button" class="btn btn-primary" onclick="saveOrder();">保存</button>
 	</div>
+	
 </div>
 
 <style type="text/css">
@@ -104,4 +103,25 @@
         $(dom).parent().parent().remove();
     }
 
+    function saveOrder(){
+    	var orderVO = new FormData(document.getElementById("order-add-form"));
+        $.ajax({
+            type: "PUT",
+            url: `/order/form`,
+            data: orderVO,
+            dataType: "json",
+            async: false,
+            context: document.body,
+            success: function (data) {
+                if (data) {
+                    alert("新增成功！");
+                    $("#myModal").click();
+                    initData();
+                }
+            },
+            error: function (data) {
+                // 提示新增失败
+            }
+        });
+    }
 </script>
