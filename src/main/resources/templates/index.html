@@ -91,7 +91,7 @@
                         <a href="##" data-toggle="modal" data-target="#noOrderClientname">
                             <div>
                                 <i class="fa fa-user fa-fw"></i> 三个月内未下单用户
-                                <span class="pull-right text-muted small">4 人</span>
+                                <span class="pull-right text-muted small" th:text="${clientnameList.size()} +'人'"></span>
                             </div>
                         </a>
                     </li>
