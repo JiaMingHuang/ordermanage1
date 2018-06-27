@@ -1,6 +1,7 @@
 package com.yc.ordermanage.index.controller;
 
 import com.yc.ordermanage.common.util.DESUtil;
+import com.yc.ordermanage.order.service.OrderService;
 import com.yc.ordermanage.user.domain.UserVO;
 import com.yc.ordermanage.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,13 @@ public class IndexController {
 	@Autowired
 	private UserService userService;
 
+	@Autowired
+	private OrderService orderService;
+
 	@GetMapping("/index-page")
-	public String index() {
+	public String index(Model model) {
+		// 获取三个月内未下单客户
+		model.addAttribute("clientnameList",orderService.findNoOrderClientname());
 		return "index";
 	}
 

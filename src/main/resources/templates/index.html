@@ -59,10 +59,10 @@
     <script th:src="@{vendor/morrisjs/morris.min.js}"></script>
     <script th:src="@{data/morris-data.js}"></script>
     -->
-	
-	<!-- for order-form -->
-	<script th:src="@{vendor/for-order-form/pageForJM.js}"></script>
-	<link th:href="@{vendor/for-order-form/pageForJM.css}" rel="stylesheet">
+
+    <!-- for order-form -->
+    <script th:src="@{vendor/for-order-form/pageForJM.js}"></script>
+    <link th:href="@{vendor/for-order-form/pageForJM.css}" rel="stylesheet">
 
 </head>
 
@@ -88,10 +88,10 @@
                 </a>
                 <ul class="dropdown-menu dropdown-alerts">
                     <li>
-                        <a href="#">
+                        <a href="##" data-toggle="modal" data-target="#noOrderClientname">
                             <div>
-                                <i class="fa fa-comment fa-fw"></i> New Comment
-                                <span class="pull-right text-muted small">4 minutes ago</span>
+                                <i class="fa fa-user fa-fw"></i> 三个月内未下单用户
+                                <span class="pull-right text-muted small">4 人</span>
                             </div>
                         </a>
                     </li>
@@ -165,10 +165,12 @@
                         <a href="##" rel="/users/main"><i class="fa fa-wrench fa-fw"></i><span> 账户管理</span></a>
                     </li>
                     <li>
-                        <a href="##" rel="/order/initOrderPage"><i class="fa fa-files-o fa-fw"></i><span> 订单管理</span></a>
+                        <a href="##" rel="/order/initOrderPage"><i
+                                class="fa fa-files-o fa-fw"></i><span> 订单管理</span></a>
                     </li>
                     <li>
-                        <a href="##" rel="/storehouse/initStoreHousePage"><i class="fa fa-files-o fa-fw"></i><span> 库存管理</span></a>
+                        <a href="##" rel="/storehouse/initStoreHousePage"><i
+                                class="fa fa-files-o fa-fw"></i><span> 库存管理</span></a>
                     </li>
                 </ul>
             </div>
@@ -179,7 +181,34 @@
     <!-- 公共模态框 -->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
-            <div class="modal-content"></div>
+            <div class="modal-content" id="myModal-content"></div>
+        </div>
+    </div>
+
+    <div class="modal fade bs-example-modal-sm" id="noOrderClientname" tabindex="-1" role="dialog" aria-labelledby="noOrderClientname">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content" id="noOrderClientname-content">
+                    <div class="panel-heading">三个月内未下单客户列表</div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>序号</th>
+                                    <th>客户名称</th>
+                                </tr>
+                                </thead>
+                                <tbody th:each="clientname,state : ${clientnameList}">
+                                <tr>
+                                    <td th:text="${state.index + 1}"></td>
+                                    <td th:text="${clientname}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -188,7 +217,7 @@
     $(function () {
         $("#page-wrapper").load("/[[@{main-page}]]/");
     });
-    $("#side-menu li a").click(function(){
+    $("#side-menu li a").click(function () {
         $("#page-wrapper").load($(this).attr("rel"));
     });
 </script>

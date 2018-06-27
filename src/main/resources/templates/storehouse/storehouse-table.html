@@ -100,10 +100,10 @@
     	}
     	
     	$("#storehouse-add").click(function () {
-            $(".modal-content").load("/storehouse/add");
+            $("#myModal-content").load("/storehouse/add");
         });
     	
     	function modifyStoreHouse(id){
-            $(".modal-content").load(`/storehouse/modifyStoreHouse/${id}`);
+            $("#myModal-content").load(`/storehouse/modifyStoreHouse/${id}`);
         }
     </script>

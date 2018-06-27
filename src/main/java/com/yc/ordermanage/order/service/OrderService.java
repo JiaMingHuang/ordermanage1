@@ -25,6 +25,13 @@ public class OrderService {
 		return true;
 	}
 
+	/**
+	 * 获取三个月内未下单客户
+	 */
+	public List<String> findNoOrderClientname(){
+		return orderRepository.findNoOrderClientname();
+	}
+
 }
 
 
