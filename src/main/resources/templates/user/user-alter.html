@@ -65,13 +65,13 @@
 
     $("#user-alter").click(function () {
         var inputArr = $("#user-alter-form div").find("input");
-        $.each(inputArr, function() {
-            var label = $(this).parent().find("label")[0];
-            if($(this).val() == '' || $(this).val() == null){
+        for (var i = 0; i < inputArr.length; i++) {
+            var label = $(inputArr[i]).parent().find("label")[0];
+            if($(inputArr[i]).val() == ''){
                 alert(label.innerHTML + '不能为空！');
                 return false;
             }
-        });
+        }
         var userVO = $("#user-alter-form").serializeObject();// 序列化表单内容
         $.ajax({
             type: "POST",
