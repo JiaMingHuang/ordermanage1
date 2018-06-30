@@ -62,7 +62,7 @@
                             <td>${val.factorydeliverytime}</td>
                             <td>
                             	&nbsp;
-                                <button class="fa fa-edit"></button>
+                            	<button class="fa fa-edit" data-toggle="modal" data-target="#myModal" onclick="doAlterOrder(${val.id});"></button>
                                 &nbsp;
                                 <button class="fa fa-trash-o" onclick="deleteById(${val.id});"></button>
                             </td>
@@ -103,4 +103,8 @@
     	$("#order-add").click(function () {
             $("#myModal-content").load("/order/add");
         });
+    	
+    	function doAlterOrder(id){
+            $("#myModal-content").load(`/order/alter/${id}`);
+        }
     </script>

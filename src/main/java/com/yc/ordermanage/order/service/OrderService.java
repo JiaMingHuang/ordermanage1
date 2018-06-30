@@ -2,6 +2,7 @@ package com.yc.ordermanage.order.service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,6 +47,10 @@ public class OrderService {
 		orderVO.setCreatedate(new Date());
 		orderVO.setUpdatedate(new Date());
 		return orderRepository.save(orderVO);
+	}
+
+	public Optional<OrderVO> findById(Long id) {
+		return orderRepository.findById(id);
 	}
 
 }

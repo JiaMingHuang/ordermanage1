@@ -7,13 +7,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yc.ordermanage.order.domain.OrderModel;
 import com.yc.ordermanage.order.domain.OrderVO;
 import com.yc.ordermanage.order.service.OrderService;
+import com.yc.ordermanage.orderdetail.domain.OrderDetailVO;
+import com.yc.ordermanage.orderdetail.service.OrderDetailService;
 import com.yc.ordermanage.user.domain.UserVO;
 import com.yc.ordermanage.user.service.UserService;
 @RequestMapping("/order")
@@ -22,6 +27,8 @@ public class OrderController {
 
 	@Autowired
 	private OrderService orderService;
+	@Autowired
+	private OrderDetailService orderDetailService;
 	@Autowired
 	private UserService userService;
 	
@@ -57,10 +64,22 @@ public class OrderController {
 	* @author kaming.Van.hwang
 	* @date 2018年6月28日上午1:39:34
 	 */
-	@PutMapping("/form")
+	@RequestMapping("/form")
 	@ResponseBody
-	public Boolean putUser(OrderVO orderVO) {
-		orderService.addOrder(orderVO);
+	public Boolean putUser(@RequestBody OrderModel orderModel) {
+		OrderVO orderVO = orderService.addOrder(orderModel.getOrderVO());
+		List<OrderDetailVO> orderDetailVOList = orderModel.getOrderDetailVOList();
+		for (OrderDetailVO orderDetailVO : orderDetailVOList) {
+			orderDetailVO.setOrderid(orderVO.getId());
+			orderDetailService.addOrderDetail(orderDetailVO);
+		}
 		return true;
+	}
+	
+	@GetMapping("/alter/{id}")
+	public String initOrderAlter(Model model, @PathVariable Long id) {
+		model.addAttribute("order", orderService.findById(id).get());
+		model.addAttribute("orderdetail", orderDetailService.findListById(id));
+		return "/order/order-alter";
 	}
 }
