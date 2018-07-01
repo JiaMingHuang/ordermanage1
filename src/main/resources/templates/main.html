@@ -1,3 +1,80 @@
-<p>
-这里是主页
-</p>
+
+<form id="testform">
+    <input name="userid" id="userid"/>
+    <input name="password" id="password"/>
+</form>
+
+<table class="table table-striped" id="testtable">
+
+    <thead>
+    <tr>
+        <th>id</th>
+        <th>userid</th>
+        <th>password</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>1</td>
+        <td>sysadmin</td>
+        <td>123</td>
+    </tr>
+    <tr>
+        <td>2</td>
+        <td>qwe</td>
+        <td>123</td>
+    </tr>
+    </tbody>
+</table>
+<button onclick="submit()">按钮</button>
+<script>
+
+    function submit(){
+        var userVO = $("#testform").serializeObject();// 序列化表单内容
+        console.log(userVO);
+        var userList = $("#testtable").tableToJSON();
+        console.log(testtable);
+        var userModel = {
+            user :userVO,
+            userList : userList
+        };
+
+        /*
+        var userModel = `
+        {
+	"user": {
+		"id": "1",
+		"password": "abc",
+		"userid": "sysadmin"
+	},
+	"userList": [{
+			"id": "11",
+			"userid": "abc1"
+		},
+		{
+			"id": "12",
+			"userid": "abc2"
+		}
+	]
+}
+        `;
+        */
+        console.log(JSON.stringify(userModel))
+        $.ajax({
+            type: "POST",
+            url: "/test1",
+            data: JSON.stringify(userModel),
+            dataType: "json",
+            async: false,
+            contentType:"application/json",
+            context: document.body,
+            success: function (data) {
+                alert(data);
+            },
+            error: function (data) {
+                // 提示新增失败
+            }
+        });
+    }
+
+</script>

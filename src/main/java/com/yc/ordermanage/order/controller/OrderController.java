@@ -79,7 +79,7 @@ public class OrderController {
 	@GetMapping("/alter/{id}")
 	public String initOrderAlter(Model model, @PathVariable Long id) {
 		model.addAttribute("order", orderService.findById(id).get());
-		model.addAttribute("orderdetail", orderDetailService.findListById(id));
-		return "/order/order-alter";
+		model.addAttribute("orderdetails", orderDetailService.findListById(id));
+		return "/order/order-alert";
 	}
 }

@@ -2,14 +2,13 @@ package com.yc.ordermanage.index.controller;
 
 import com.yc.ordermanage.common.util.DESUtil;
 import com.yc.ordermanage.order.service.OrderService;
+import com.yc.ordermanage.user.domain.UserModel;
 import com.yc.ordermanage.user.domain.UserVO;
 import com.yc.ordermanage.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -24,6 +23,15 @@ public class IndexController {
 
 	@Autowired
 	private OrderService orderService;
+
+	@PostMapping("/test1")
+	@ResponseBody
+	public String test(@RequestBody UserModel userModel){
+		System.out.println("-----------------test--------------------");
+		System.out.println(userModel);
+		return "success";
+	}
+
 
 	@GetMapping("/index-page")
 	public String index(Model model) {
