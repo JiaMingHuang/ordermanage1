@@ -22,5 +22,5 @@ public interface UserRepository extends JpaRepository<UserVO, Long> {
 	public UserVO save(UserVO userVO);
 
 	@Query(value = "SELECT T.* FROM T_USER T WHERE ACCOUNTTYPE = :accounttype", nativeQuery = true)
-	public List<UserVO> getFactory(int type);
+	public List<UserVO> getFactory(@Param("accounttype") Integer accounttype);
 }

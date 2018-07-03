@@ -46,6 +46,8 @@ public class OrderService {
 	public OrderVO addOrder(OrderVO orderVO) {
 		orderVO.setCreatedate(new Date());
 		orderVO.setUpdatedate(new Date());
+		orderVO.setIstakeover("0");
+		orderVO.setIsgather("0");
 		return orderRepository.save(orderVO);
 	}
 
@@ -53,6 +55,18 @@ public class OrderService {
 		return orderRepository.findById(id);
 	}
 
+	public OrderVO updateOrderVO(OrderVO orderVO) {
+		orderVO.setUpdatedate(new Date());
+		return orderRepository.save(orderVO);
+	}
+
+	public List<OrderVO> findUnfinishedOrder(String isgather) {
+		return orderRepository.findUnfinishedOrder(isgather);
+	}
+
+	public List<OrderVO> findFinishedOrder(String isgather) {
+		return orderRepository.findFinishedOrder(isgather);
+	}
 }
 
 

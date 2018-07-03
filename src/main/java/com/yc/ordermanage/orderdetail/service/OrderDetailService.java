@@ -27,4 +27,11 @@ public class OrderDetailService {
 	public List<OrderDetailVO> findListById(Long orderid){
 		return orderDetailRepository.findListById(orderid);
 	}
+
+	public OrderDetailVO updateOrderDetail(OrderDetailVO orderDetailVO) {
+		orderDetailVO.setUpdatedate(new Date());
+		orderDetailVO.setAmount(orderDetailVO.getAmount() - orderDetailVO.getActual_take_amount());
+		orderDetailVO.setTotal(orderDetailVO.getAmount() * orderDetailVO.getPrice());
+		return orderDetailRepository.save(orderDetailVO);
+	}
 }

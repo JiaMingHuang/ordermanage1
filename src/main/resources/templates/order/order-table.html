@@ -12,6 +12,8 @@
 			<!-- /.panel-heading -->
 			<div class="panel-body">
 				<button id="order-add" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">新增订单</button>
+				<button  class="btn btn-primary" type="button" onclick="initData()">查看预处理订单</button>
+				<button id="findFinishedOrder" class="btn btn-primary" type="button" onclick="findFinishedOrder()">查看已完成订单</button>
 			</div>
 			<div class="panel-heading">订单信息列表</div>
 			<div class="panel-body">
@@ -45,7 +47,7 @@
     	function initData() {
             $.ajax({
                 type: "POST",
-                url: `/order/findAll`,
+                url: `/order/findUnfinishedOrder`,
                 async: true,
                 context: document.body,
                 success: function (data) {
@@ -58,13 +60,19 @@
                             <td>${val.ordertype}</td>
                             <td>${val.clientname}</td>
                             <td>${val.contact}</td>
-                            <td>${val.clientdeliverytime}</td>
-                            <td>${val.factorydeliverytime}</td>
+                            <td>${val.clientdeliverytime == null ? "--" : new Date(val.clientdeliverytime).Format("yyyy-MM-dd HH:mm:ss")}</td>
+                            <td>${val.factorydeliverytime == null ? "--" : new Date(val.factorydeliverytime).Format("yyyy-MM-dd HH:mm:ss")}</td>
                             <td>
                             	&nbsp;
                             	<button class="fa fa-edit" data-toggle="modal" data-target="#myModal" onclick="doAlterOrder(${val.id});"></button>
                                 &nbsp;
                                 <button class="fa fa-trash-o" onclick="deleteById(${val.id});"></button>
+                                &nbsp;
+                                <button class="${val.istakeover == '0' ? 'btn btn-primary btn-sm': 'hidden'}" onclick="fnTakeOver(${val.id});" >确认收货</button>
+                                <button class="${val.istakeover == '1' ? 'btn btn-primary btn-sm disabled': 'hidden'}" >已经收货</button>
+                                &nbsp;
+                                <button class="${val.isgather == '0' ? 'btn btn-success btn-sm': 'hidden'}" onclick="fnGather(${val.id},${val.istakeover});" >确认收款</button>
+                                <button class="${val.isgather == '1' ? 'btn btn-success btn-sm disabled': 'hidden'}" >已经收款</button>
                             </td>
                          </tr>
                         `;
@@ -77,7 +85,47 @@
                 }
             });
         }
-    	
+
+ 		function fnTakeOver(id) {
+            if(window.confirm("确认收货？")){
+				$.ajax({
+                    type: "POST",
+                    url: `/order/doTakeOver/${id}`,
+                    async: true,
+                    dataType:"TEXT",
+                    context: document.body,
+					success:function (data) {
+						if(data){
+                            alert("已确认收货！");
+                            initData();
+						}
+                    }
+				});
+			}
+        }
+
+		 function fnGather(id,istakeover) {
+    	    if(istakeover == "0"){
+                alert("请先确认是否收货完毕！");
+			}else{
+                if(window.confirm("确认收款？")){
+                    $.ajax({
+                        type: "POST",
+                        url: `/order/doGather/${id}`,
+                        async: true,
+                        dataType:"TEXT",
+                        context: document.body,
+                        success:function (data) {
+                            if(data){
+                                alert("已确认收款！");
+                                initData();
+                            }
+                        }
+                    });
+                }
+			}
+		 }
+
     	function deleteById(id){
     		if(window.confirm("确认删除该记录？")){
                 $.ajax({
@@ -107,4 +155,46 @@
     	function doAlterOrder(id){
             $("#myModal-content").load(`/order/alter/${id}`);
         }
+
+ function findFinishedOrder() {
+     $.ajax({
+         type: "POST",
+         url: `/order/findFinishedOrder`,
+         async: true,
+         context: document.body,
+         success: function (data) {
+             let _dom;
+             data.forEach((val, index, data) => {
+                 _dom += `
+                        <tr>
+                            <td>${val.id}</td>
+                            <td>${val.ordernumber}</td>
+                            <td>${val.ordertype}</td>
+                            <td>${val.clientname}</td>
+                            <td>${val.contact}</td>
+                            <td>${val.clientdeliverytime == null ? "--" : new Date(val.clientdeliverytime).Format("yyyy-MM-dd HH:mm:ss")}</td>
+                            <td>${val.factorydeliverytime == null ? "--" : new Date(val.factorydeliverytime).Format("yyyy-MM-dd HH:mm:ss")}</td>
+                            <td>
+                            	&nbsp;
+                            	<button class="fa fa-edit" data-toggle="modal" data-target="#myModal" onclick="doAlterOrder(${val.id});"></button>
+                                &nbsp;
+                                <button class="fa fa-trash-o" onclick="deleteById(${val.id});"></button>
+                                &nbsp;
+                                <button class="${val.istakeover == '0' ? 'btn btn-primary btn-sm': 'hidden'}" onclick="fnTakeOver(${val.id});" >确认收货</button>
+                                <button class="${val.istakeover == '1' ? 'btn btn-primary btn-sm disabled': 'hidden'}" >已经收货</button>
+                                &nbsp;
+                                <button class="${val.isgather == '0' ? 'btn btn-success btn-sm': 'hidden'}" onclick="fnGather(${val.id},${val.istakeover});" >确认收款</button>
+                                <button class="${val.isgather == '1' ? 'btn btn-success btn-sm disabled': 'hidden'}" >已经收款</button>
+                            </td>
+                         </tr>
+                        `;
+             });
+             $("#order-tbody").replaceWith(`<tbody id="order-tbody">${_dom}</tbody>`);
+             $("#order-table").DataTable({
+                 responsive: true,
+                 destroy:true
+             });
+         }
+     });
+ }
     </script>

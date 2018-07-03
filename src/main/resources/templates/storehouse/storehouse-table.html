@@ -11,11 +11,6 @@
 			<div class="panel-heading">库存信息管理</div>
 			<!-- /.panel-heading -->
 			<div class="panel-body">
-				<!-- <div class="form-group">
-					<label>品名规格颜色：</label> <input class="form-control"
-						name="name_spec_color">
-				</div>
-				<button id="storehouse-query" type="button" class="btn btn-primary">查询</button> -->
 				<button id="storehouse-add" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">新增库存</button>
 			</div>
 			<div class="panel-heading">库存信息列表</div>
@@ -29,6 +24,7 @@
 							<th>品名规格颜色</th>
 							<th>数量</th>
 							<th>创建时间</th>
+							<th>更新时间</th>
 							<th>操作</th>
 						</tr>
 					</thead>
@@ -58,7 +54,8 @@
                             <td>${val.id}</td>
                             <td>${val.name_spec_color}</td>
                             <td>${val.amount}</td>
-                            <td>${val.createDate}</td>
+                            <td>${val.createDate == null ? "--" : new Date(val.createDate).Format("yyyy-MM-dd HH:mm:ss")}</td>
+                            <td>${val.updateDate == null ? "--" : new Date(val.updateDate).Format("yyyy-MM-dd HH:mm:ss")}</td>
                             <td>
                             	&nbsp;
                                 <button class="fa fa-edit" data-toggle="modal" data-target="#myModal" onclick="modifyStoreHouse(${val.id});"></button>

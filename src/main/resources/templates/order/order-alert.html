@@ -1,34 +1,34 @@
 <div class="panel panel-default">
     <div class="panel-heading">修改库存商品</div>
     <div class="panel-body">
-        <form id="storehouse-alter-form">
+        <form id="order-alert-form">
             <input id="id" name="id" th:value="${order.id}" type="hidden">
             <div class="form-group">
-                <label>订单类型：</label> <span class="form-control" name="ordertype" th:text="${order.ordertype}" id="ordertype"></span>
+                <label>订单类型：</label> <span class="form-control" name="ordertype" th:text="${order.ordertype}" id="span_ordertype"></span>
             </div>
             <div class="form-group">
-                <label>订单编号：</label> <span class="form-control" name="ordernumber" th:text="${order.ordernumber}" id="ordernumber"></span>
+                <label>订单编号：</label> <span class="form-control" name="ordernumber" th:text="${order.ordernumber}" id="span_ordernumber"></span>
             </div>
             <div class="form-group">
-                <label>客户名称：</label> <span class="form-control" name="clientname" th:text="${order.clientname}" id="clientname"></span>
+                <label>客户名称：</label> <span class="form-control" name="clientname" th:text="${order.clientname}" id="span_clientname"></span>
             </div>
             <div class="form-group">
-                <label>客户联系电话：</label> <span class="form-control" name="contact" th:text="${order.contact}" id="contact"></span>
+                <label>客户联系电话：</label> <span class="form-control" name="contact" th:text="${order.contact}" id="span_contact"></span>
             </div>
             <div class="form-group">
-                <label>客户要求发货时间：</label> <span class="form-control" name="clientdeliverytime" th:text="${order.clientdeliverytime}" id="clientdeliverytime"></span>
+                <label>客户要求发货时间：</label> <span class="form-control" name="clientdeliverytime" th:text="${order.clientdeliverytime}" id="span_clientdeliverytime"></span>
             </div>
             <div class="form-group">
-            <label>工厂交货时间：</label> <span class="form-control" name="factorydeliverytime" th:text="${order.factorydeliverytime}" id="factorydeliverytime"></span>
+            <label>工厂交货时间：</label> <span class="form-control" name="factorydeliverytime" th:text="${order.factorydeliverytime}" id="span_factorydeliverytime"></span>
             </div>
             <div class="form-group">
-                <label>送货地址：</label> <span class="form-control" name="address" th:text="${order.address}" id="address"></span>
+                <label>送货地址：</label> <span class="form-control" name="address" th:text="${order.address}" id="span_address"></span>
             </div>
             <div class="form-group">
-                <label>退货重镀原因：</label> <span class="form-control" name="reason" th:text="${order.reason}" id="reason"></span>
+                <label>退货重镀原因：</label> <span class="form-control" name="reason" th:text="${order.reason}" id="span_reason"></span>
             </div>
             <div class="form-group">
-                <label>订单创建时间：</label> <span class="form-control" name="createdate" th:text="${order.createdate}" id="createdate"></span>
+                <label>订单创建时间：</label> <span class="form-control" name="createdate" th:text="${order.createdate}" id="span_createdate"></span>
             </div>
         </form>
         <div class="page-header part_header">
@@ -46,39 +46,62 @@
                     <th>amount</th>
                     <th>total</th>
                     <th>factoryid</th>
-                    <th>实际收货数量</th>
+                    <th>actual_take_amount</th>
                 </tr>
                 <tr th:each="orderdetail : ${orderdetails}">
                     <td th:text="${orderdetail.name_spec_color}"></td>
-                    <td th:text="${orderdetail.amount}"></td>
+                    <td th:text="${orderdetail.unit}"></td>
                     <td th:text="${orderdetail.price}"></td>
-                    <td th:text="${orderdetail.amount}" id="amount"></td>
+                    <td class="amount" th:text="${orderdetail.amount}"></td>
                     <td th:text="${orderdetail.total}"></td>
                     <td th:text="${orderdetail.factoryid}"></td>
-                    <td><input class="form-control" name="actual_take_amount" type="number" id="actual_take_amount" min="0"></td>
+                    <td class="aaa"><input class="form-control" name="actual_take_amount"></td>
                 </tr>
             </table>
         </div>
     </div>
     <div class="panel-footer">
-        <button type="button" class="btn btn-primary" id="storehouse-alter">保存</button>
+        <button type="button" class="btn btn-primary" onclick="updateOrder()">保存</button>
     </div>
 </div>
 
 <script type="text/javascript">
-    /*function NumberCheck(t){
-        var num = t.value;
-        var re=/^\d*$/;
-        if(!re.test(num)){
-            isNaN(parseInt(num))?t.value=0:t.value=parseInt(num);
+    $(".aaa input").keyup(function (){
+    var actual = Number($(this).val());
+    var amount = Number($(this).parent().parent().find(".amount").html());
+    if(actual>amount){
+        alert("实际收货数量不能大于该订单商品数量！")
+        $(this).val("").focus();
         }
-         onkeyup="NumberCheck(this)"
-    }*/
-    /*var text = document.getElementById("actual_take_amount");
-    text.onkeyup = function(){
-        this.value=this.value.replace(/\D/g,'');
-        if(text.value>($('#amount').val())){
-            text.value = $('#amount').val();
-        }
-    }*/
+    });
+
+    function updateOrder(){
+        var orderVO = $("#order-alert-form").serializeObject();// 序列化表单内容
+        var orderDetailVOList = $("#order-list").tableToJSON();
+        var actual = Number($(".aaa").val());
+        console.log(actual);
+        console.log(orderVO);
+        console.log(orderDetailVOList);
+        var orderModel = {
+            orderVO :orderVO,
+            orderDetailVOList : orderDetailVOList
+        };
+        $.ajax({
+            type: "POST",
+            url: "/order/updateOrder",
+            data: JSON.stringify(orderModel),
+            dataType: "json",
+            async: false,
+            contentType:"application/json",
+            context: document.body,
+            success: function (data) {
+                alert(data);
+                $("#myModal").click();
+                initData();
+            },
+            error: function (data) {
+                // 提示新增失败
+            }
+        });
+    }
 </script>

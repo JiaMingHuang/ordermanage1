@@ -37,7 +37,11 @@ public class OrderVO {
 	private Date updatedate;
 	@Column
 	private String delflag;
-	
+	@Column
+	private String istakeover;//确认收货则为1，未收货为0
+	@Column
+	private String isgather;//确认收款则为1，未收款为0
+
 	public Long getId() {
 		return id;
 	}
@@ -109,5 +113,17 @@ public class OrderVO {
 	}
 	public void setDelflag(String delflag) {
 		this.delflag = delflag;
+	}
+	public String getIstakeover() {
+		return istakeover;
+	}
+	public void setIstakeover(String istakeover) {
+		this.istakeover = istakeover;
+	}
+	public String getIsgather() {
+		return isgather;
+	}
+	public void setIsgather(String isgather) {
+		this.isgather = isgather;
 	}
 }

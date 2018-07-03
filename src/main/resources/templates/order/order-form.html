@@ -45,7 +45,11 @@
 					<label>单价：</label> <input class="form-control" name="price">
 					<label>数量：</label> <input class="form-control" name="amount">
 					<label>总价：</label> <input class="form-control" name="total">
-					<label>工厂：</label> <input class="form-control" name="factoryid">
+					<label>工厂：</label>
+					<select class="form-control" name="factoryid">
+						<option>请选择班级</option>
+						<option  th:each="factory:${factory}" th:value="${factory.id}" th:text="${factory.companyname }"></option>
+					</select>
 					</form>
 			<button id="add" type="button" class="btn btn-primary"
 				onclick="test()">add</button>
@@ -82,6 +86,7 @@
 }
 </style>
 <script>
+	//商品表格
     function test() {
         var form = $("#testform").serializeObject();
         let dom = `
@@ -100,6 +105,7 @@
         $("#list-tbody").append(dom);
     }
 
+    //删除商品
     function deletedom(dom) {
         $(dom).parent().parent().remove();
     }

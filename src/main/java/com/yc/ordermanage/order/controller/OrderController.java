@@ -21,6 +21,9 @@ import com.yc.ordermanage.orderdetail.domain.OrderDetailVO;
 import com.yc.ordermanage.orderdetail.service.OrderDetailService;
 import com.yc.ordermanage.user.domain.UserVO;
 import com.yc.ordermanage.user.service.UserService;
+
+import javax.servlet.http.HttpSession;
+
 @RequestMapping("/order")
 @Controller
 public class OrderController {
@@ -37,9 +40,16 @@ public class OrderController {
 		return "/order/order-table";
 	}
 
-	@RequestMapping("/add")
-	public String orderForm(){
-		//model.addAttribute("factory", userService.getFactory(3));
+	@GetMapping("/add")
+	public String orderForm(Model model){
+
+		/*Model
+		List<UserVO> factory = userService.getFactory(3);
+		session.setAttribute("factory", factory);*/
+		/*UserVO userVO = new UserVO();
+		userVO.setAccounttype(3);*/
+		List<UserVO> factory = userService.getFactory(3);
+		model.addAttribute("factory", factory);
 		return "/order/order-form";
 	}
 	
@@ -58,7 +68,7 @@ public class OrderController {
 	
 	/**
 	* @Title: putUser 
-	* @Description: TODO 
+	* @Description: 保存订单和订单商品
 	* @param orderVO
 	* @return Boolean
 	* @author kaming.Van.hwang
@@ -81,5 +91,72 @@ public class OrderController {
 		model.addAttribute("order", orderService.findById(id).get());
 		model.addAttribute("orderdetails", orderDetailService.findListById(id));
 		return "/order/order-alert";
+	}
+
+	/**
+	 * 确认收货
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping("/doTakeOver/{id}")
+	@ResponseBody
+	public String doTakeOver(@PathVariable Long id){
+		OrderVO orderVO = orderService.findById(id).get();
+		orderVO.setIstakeover("1");
+		orderService.updateOrderVO(orderVO);
+		return "SUCCESS";
+	}
+
+	/**
+	 * 确认收款
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping("/doGather/{id}")
+	@ResponseBody
+	public String doGather(@PathVariable Long id){
+		OrderVO orderVO = orderService.findById(id).get();
+		orderVO.setIsgather("1");//如果确认收款则为1，未收款为0
+		orderService.updateOrderVO(orderVO);
+		return "SUCCESS";
+	}
+
+	/**
+	 * 修改订单
+	 * @param orderModel
+	 * @return
+	 */
+	@RequestMapping("/updateOrder")
+	@ResponseBody
+	public String updateOrder(@RequestBody OrderModel orderModel){
+		OrderVO orderVO = orderModel.getOrderVO();
+		List<OrderDetailVO> orderDetailVOList = orderModel.getOrderDetailVOList();
+		orderService.updateOrderVO(orderVO);
+		for (OrderDetailVO orderDetailVO : orderDetailVOList) {
+			orderDetailService.updateOrderDetail(orderDetailVO);
+		}
+		return  "SUCCESS";
+	}
+
+	/**
+	 * 查看未收款订单，即未完成订单
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping("/findUnfinishedOrder")
+	@ResponseBody
+	public List<OrderVO> findUnfinishedOrder(Model model){
+		List<OrderVO> orderVOS = orderService.findUnfinishedOrder("0");//搜索未收款的所有订单
+		return orderVOS;
+	}
+
+	/**
+	 * 查看所有已完成订单，即已收款订单
+	 */
+	@RequestMapping("/findFinishedOrder")
+	@ResponseBody
+	public List<OrderVO> findFinishedOrder(Model model){
+		List<OrderVO> orderVOS = orderService.findFinishedOrder("1");//搜索已收款的所有订单
+		return orderVOS;
 	}
 }

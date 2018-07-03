@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import com.yc.ordermanage.order.domain.OrderVO;
+import org.springframework.data.repository.query.Param;
 
 public interface OrderRepository extends JpaRepository<OrderVO, Long> {
 
@@ -22,4 +23,10 @@ public interface OrderRepository extends JpaRepository<OrderVO, Long> {
 	@Modifying
 	@Override
 	public OrderVO save(OrderVO orderVO);
+
+	@Query(value = "SELECT T.* FROM T_ORDER T WHERE T.ISGATHER = :isgather", nativeQuery = true)
+	public List<OrderVO> findUnfinishedOrder(@Param("isgather") String isgather);
+
+	@Query(value = "SELECT T.* FROM T_ORDER T WHERE T.ISGATHER = :isgather", nativeQuery = true)
+	public List<OrderVO> findFinishedOrder(@Param("isgather") String isgather);
 }
