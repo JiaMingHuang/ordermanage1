@@ -4,31 +4,43 @@
         <form id="order-alert-form">
             <input id="id" name="id" th:value="${order.id}" type="hidden">
             <div class="form-group">
-                <label>订单类型：</label> <span class="form-control" name="ordertype" th:text="${order.ordertype}" id="span_ordertype"></span>
+                <label>订单类型：</label>
+                <input class="form-control" name="ordertype" th:value="${order.ordertype}" id="ordertype"></input>
             </div>
             <div class="form-group">
-                <label>订单编号：</label> <span class="form-control" name="ordernumber" th:text="${order.ordernumber}" id="span_ordernumber"></span>
+                <label>订单编号：</label>
+                <input class="form-control" name="ordernumber" th:value="${order.ordernumber}" id="ordernumber"></input>
             </div>
             <div class="form-group">
-                <label>客户名称：</label> <span class="form-control" name="clientname" th:text="${order.clientname}" id="span_clientname"></span>
+                <label>客户名称：</label>
+                <input class="form-control" name="clientname" th:value="${order.clientname}" id="clientname"></input>
             </div>
             <div class="form-group">
-                <label>客户联系电话：</label> <span class="form-control" name="contact" th:text="${order.contact}" id="span_contact"></span>
+                <label>客户联系电话：</label>
+                <input class="form-control" name="contact" th:value="${order.contact}" id="contact"></input>
             </div>
             <div class="form-group">
-                <label>客户要求发货时间：</label> <span class="form-control" name="clientdeliverytime" th:text="${order.clientdeliverytime}" id="span_clientdeliverytime"></span>
+                <label>客户要求发货时间：</label>
+                <input class="form-control" name="clientdeliverytime" th:value="${order.clientdeliverytime}" id="clientdeliverytime"></input>
             </div>
             <div class="form-group">
-            <label>工厂交货时间：</label> <span class="form-control" name="factorydeliverytime" th:text="${order.factorydeliverytime}" id="span_factorydeliverytime"></span>
+            <label>工厂交货时间：</label>
+                <input class="form-control" name="factorydeliverytime" th:value="${order.factorydeliverytime}" id="factorydeliverytime"></input>
             </div>
             <div class="form-group">
-                <label>送货地址：</label> <span class="form-control" name="address" th:text="${order.address}" id="span_address"></span>
+                <label>送货地址：</label>
+                <input class="form-control" name="address" th:value="${order.address}" id="address"></input>
             </div>
             <div class="form-group">
-                <label>退货重镀原因：</label> <span class="form-control" name="reason" th:text="${order.reason}" id="span_reason"></span>
+                <label>退货重镀原因：</label>
+                <input class="form-control" name="reason" th:value="${order.reason}" id="reason"></input>
+            <div class="form-group">
+                <label>订单创建时间：</label>
+                <input class="form-control" name="createdate" th:value="${order.createdate}" id="createdate"></input>
             </div>
             <div class="form-group">
-                <label>订单创建时间：</label> <span class="form-control" name="createdate" th:text="${order.createdate}" id="span_createdate"></span>
+                <label>订单更新时间：</label>
+                <input class="form-control" name="updatedate" th:value="${order.updatedate}" id="updatedate"></input>
             </div>
         </form>
         <div class="page-header part_header">
@@ -37,9 +49,31 @@
             </h1>
         </div>
         <div class="panel-body">
+            <!--<table width="100%"
+                   class="table table-striped table-bordered table-hover" id="order-list-fake">
+                <tr>
+                    <th>品名规格颜色</th>
+                    <th>单位</th>
+                    <th>单价</th>
+                    <th>数量</th>
+                    <th>总价</th>
+                    <th>工厂</th>
+                    <th>实际收货数量</th>
+                </tr>
+            </table>-->
             <table width="100%"
                    class="table table-striped table-bordered table-hover" id="order-list">
+                <thead>
                 <tr>
+                    <th>品名规格颜色</th>
+                    <th>单位</th>
+                    <th>单价</th>
+                    <th>数量</th>
+                    <th>总价</th>
+                    <th>工厂</th>
+                    <th>实际收货数量</th>
+                </tr>
+                <tr hidden>
                     <th>name_spec_color</th>
                     <th>unit</th>
                     <th>price</th>
@@ -48,7 +82,11 @@
                     <th>factoryid</th>
                     <th>actual_take_amount</th>
                 </tr>
+                </thead>
+                <tbody id="tbody-order-list">
                 <tr th:each="orderdetail : ${orderdetails}">
+                    <td th:text="${orderdetail.id}" hidden></td>
+                    <td th:text="${orderdetail.orderid}" hidden></td>
                     <td th:text="${orderdetail.name_spec_color}"></td>
                     <td th:text="${orderdetail.unit}"></td>
                     <td th:text="${orderdetail.price}"></td>
@@ -57,6 +95,7 @@
                     <td th:text="${orderdetail.factoryid}"></td>
                     <td class="aaa"><input class="form-control" name="actual_take_amount"></td>
                 </tr>
+                </tbody>
             </table>
         </div>
     </div>
@@ -76,10 +115,30 @@
     });
 
     function updateOrder(){
-        var orderVO = $("#order-alert-form").serializeObject();// 序列化表单内容
-        var orderDetailVOList = $("#order-list").tableToJSON();
-        var actual = Number($(".aaa").val());
-        console.log(actual);
+        var orderVO = new Object();
+        orderVO = {
+            id : $("#order-alert-form").find("#id").val()
+        };
+
+        var orderDetailVOList=[];
+        var trArr = $("#tbody-order-list").find("tr");
+        trArr.each(function () {
+            var orderDetail = new Object();
+            var tdArr = $(this).children();
+            orderDetail = {
+                id : tdArr.eq(0).html(),
+                orderid : tdArr.eq(1).html(),
+                name_spec_color : tdArr.eq(2).html(),
+                unit : tdArr.eq(3).html(),
+                price : tdArr.eq(4).html(),
+                amount : tdArr.eq(5).html(),
+                total : tdArr.eq(6).html(),
+                factoryid : tdArr.eq(7).html(),
+                actual_take_amount : tdArr.eq(8).find("input").val()
+            };
+            orderDetailVOList.push(orderDetail);
+        });
+
         console.log(orderVO);
         console.log(orderDetailVOList);
         var orderModel = {
@@ -95,7 +154,7 @@
             contentType:"application/json",
             context: document.body,
             success: function (data) {
-                alert(data);
+                //alert(data);
                 $("#myModal").click();
                 initData();
             },

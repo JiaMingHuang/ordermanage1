@@ -1,5 +1,6 @@
 package com.yc.ordermanage.order.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -29,4 +30,11 @@ public interface OrderRepository extends JpaRepository<OrderVO, Long> {
 
 	@Query(value = "SELECT T.* FROM T_ORDER T WHERE T.ISGATHER = :isgather", nativeQuery = true)
 	public List<OrderVO> findFinishedOrder(@Param("isgather") String isgather);
+
+	@Query(value = "SELECT T.* FROM T_ORDER T WHERE T.ISGATHER = :id", nativeQuery = true)
+	public OrderVO findOneById(@Param("id") Long id);
+
+	@Modifying
+	@Query(value = "UPDATE T_ORDER T SET T.UPDATEDATE = :updatedate WHERE T.ID = :id", nativeQuery = true)
+	public void updateOrderVO(@Param("updatedate") Date updatedate,@Param("id") Long id);
 }

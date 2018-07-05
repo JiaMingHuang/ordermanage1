@@ -37,22 +37,23 @@
 			</h1>
 		</div>
 		<!-- ======================================================================================== -->
-		<div class="panel-body">
+		<div id="ddd">
 
 				<form id="testform">
-					<label>品名规格颜色：</label> <input class="form-control" name="name_spec_color">
-					<label>单位：</label> <input class="form-control" name="unit">
-					<label>单价：</label> <input class="form-control" name="price">
-					<label>数量：</label> <input class="form-control" name="amount">
-					<label>总价：</label> <input class="form-control" name="total">
-					<label>工厂：</label>
-					<select class="form-control" name="factoryid">
-						<option>请选择班级</option>
-						<option  th:each="factory:${factory}" th:value="${factory.id}" th:text="${factory.companyname }"></option>
-					</select>
+					<label>品名规格颜色： <input class="form-control" name="name_spec_color" id="testform_name_spec_color"></label>
+					<label>单位： <input class="form-control" name="unit" id="testform_unit"></label>
+					<label>单价：<input class="form-control" name="price" id="testform_price"></label>
+					<label>数量： <input class="form-control" name="amount" id="testform_amount"></label>
+					<label>总价： <input class="form-control" name="total" id="testform_total"></label>
+					<label>工厂：
+					<select class="form-control" name="factoryid" id="testform_factoryid">
+						<option>请选择指定工厂</option>
+						<option  th:each="factory:${factory}" th:value="${factory.id}" th:text="${factory.companyname}"></option>
+					</select></label>
 					</form>
-			<button id="add" type="button" class="btn btn-primary"
-				onclick="test()">add</button>
+			<div class="panel-body">
+			<button id="add" type="button" class="btn btn-primary" onclick="test()">添加商品</button>
+			</div>
 		</div>
 		<div class="panel-heading">商品列表</div>
 		<div class="panel-body">
@@ -86,8 +87,7 @@
 }
 </style>
 <script>
-	//商品表格
-    function test() {
+	function addTable() {
         var form = $("#testform").serializeObject();
         let dom = `
         <tr>
@@ -103,6 +103,26 @@
         </tr>
         `;
         $("#list-tbody").append(dom);
+
+        $("#testform_name_spec_color").val("");
+        $("#testform_unit").val("");
+        $("#testform_price").val("");
+        $("#testform_amount").val("");
+        $("#testform_total").val("");
+        $("#testform_factoryid").val("");
+    }
+	//商品表格
+    function test() {
+        /*$("#testform label input").each(function () {
+			if($(this).val() == ""){
+                document.getElementById("ddd").className = "has-error";
+				console.log(111);
+			}*/
+                addTable();
+
+
+
+
     }
 
     //删除商品
@@ -128,7 +148,7 @@
             contentType:"application/json",
             context: document.body,
             success: function (data) {
-                alert(data);
+                //alert(data);
                 $("#myModal").click();
                 initData();
             },
@@ -136,23 +156,5 @@
                 // 提示新增失败
             }
         });
-        /* $.ajax({
-            type: "PUT",
-            url: `/order/form`,
-            data: orderVO,
-            dataType: "json",
-            async: false,
-            context: document.body,
-            success: function (data) {
-                if (data) {
-                    alert("新增成功！");
-                    $("#myModal").click();
-                    initData();
-                }
-            },
-            error: function (data) {
-                // 提示新增失败
-            }
-        }); */
     }
 </script>

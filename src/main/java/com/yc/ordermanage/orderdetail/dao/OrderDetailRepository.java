@@ -1,5 +1,6 @@
 package com.yc.ordermanage.orderdetail.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,6 +18,8 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetailVO, Long
 
 	@Query(value = "SELECT T.* FROM ORDERDETAIL T WHERE ORDERID = :orderid", nativeQuery = true)
 	public List<OrderDetailVO> findListById(@Param("orderid") Long orderid);
-	
-	
+
+	@Modifying
+	@Query(value = "UPDATE ORDERDETAIL T SET T.UPDATEDATE = :updatedate,T.AMOUNT = :amount WHERE T.ID = :id", nativeQuery = true)
+	public void updateOrderDetail(@Param("updatedate")Date updatedate, @Param("amount")int amount, @Param("id")Long id);
 }

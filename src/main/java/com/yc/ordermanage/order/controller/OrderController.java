@@ -1,18 +1,13 @@
 package com.yc.ordermanage.order.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import com.yc.ordermanage.order.domain.OrderModel;
 import com.yc.ordermanage.order.domain.OrderVO;
@@ -69,7 +64,6 @@ public class OrderController {
 	/**
 	* @Title: putUser 
 	* @Description: 保存订单和订单商品
-	* @param orderVO
 	* @return Boolean
 	* @author kaming.Van.hwang
 	* @date 2018年6月28日上午1:39:34
@@ -103,7 +97,7 @@ public class OrderController {
 	public String doTakeOver(@PathVariable Long id){
 		OrderVO orderVO = orderService.findById(id).get();
 		orderVO.setIstakeover("1");
-		orderService.updateOrderVO(orderVO);
+		orderService.updateOrderVO(new Date(), id);
 		return "SUCCESS";
 	}
 
@@ -117,7 +111,7 @@ public class OrderController {
 	public String doGather(@PathVariable Long id){
 		OrderVO orderVO = orderService.findById(id).get();
 		orderVO.setIsgather("1");//如果确认收款则为1，未收款为0
-		orderService.updateOrderVO(orderVO);
+		orderService.updateOrderVO(new Date(), id);
 		return "SUCCESS";
 	}
 
@@ -126,16 +120,16 @@ public class OrderController {
 	 * @param orderModel
 	 * @return
 	 */
-	@RequestMapping("/updateOrder")
+	@PostMapping("/updateOrder")
 	@ResponseBody
-	public String updateOrder(@RequestBody OrderModel orderModel){
+	public Boolean updateOrder(@RequestBody OrderModel orderModel){
 		OrderVO orderVO = orderModel.getOrderVO();
 		List<OrderDetailVO> orderDetailVOList = orderModel.getOrderDetailVOList();
-		orderService.updateOrderVO(orderVO);
-		for (OrderDetailVO orderDetailVO : orderDetailVOList) {
+		orderService.updateOrderVO(new Date(), orderVO.getId());//更新主订单修改时间
+		for (OrderDetailVO orderDetailVO : orderDetailVOList) {//更新订单中的商品列表
 			orderDetailService.updateOrderDetail(orderDetailVO);
 		}
-		return  "SUCCESS";
+		return true;
 	}
 
 	/**

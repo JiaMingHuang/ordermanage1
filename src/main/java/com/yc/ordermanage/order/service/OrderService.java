@@ -55,9 +55,9 @@ public class OrderService {
 		return orderRepository.findById(id);
 	}
 
-	public OrderVO updateOrderVO(OrderVO orderVO) {
-		orderVO.setUpdatedate(new Date());
-		return orderRepository.save(orderVO);
+	@Transactional
+	public void updateOrderVO(Date updatedate, Long id) {
+		orderRepository.updateOrderVO(updatedate,id);
 	}
 
 	public List<OrderVO> findUnfinishedOrder(String isgather) {
@@ -66,6 +66,10 @@ public class OrderService {
 
 	public List<OrderVO> findFinishedOrder(String isgather) {
 		return orderRepository.findFinishedOrder(isgather);
+	}
+
+	public OrderVO findOneById(Long id) {
+		return orderRepository.findOneById(id);
 	}
 }
 

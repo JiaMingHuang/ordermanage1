@@ -28,10 +28,10 @@ public class OrderDetailService {
 		return orderDetailRepository.findListById(orderid);
 	}
 
-	public OrderDetailVO updateOrderDetail(OrderDetailVO orderDetailVO) {
+	@Transactional
+	public void updateOrderDetail(OrderDetailVO orderDetailVO) {
 		orderDetailVO.setUpdatedate(new Date());
 		orderDetailVO.setAmount(orderDetailVO.getAmount() - orderDetailVO.getActual_take_amount());
-		orderDetailVO.setTotal(orderDetailVO.getAmount() * orderDetailVO.getPrice());
-		return orderDetailRepository.save(orderDetailVO);
+		orderDetailRepository.updateOrderDetail(orderDetailVO.getUpdatedate(),orderDetailVO.getAmount(),orderDetailVO.getId());
 	}
 }
