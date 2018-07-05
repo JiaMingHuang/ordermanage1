@@ -11,9 +11,9 @@ spring:
     hibernate:
      ddl-auto: update
   datasource:
-    url: jdbc:mysql://118.190.215.100:3306/liubo?useSSL=false&amp;useUnicode=true&amp;characterEncoding=UTF-8
-    username: liubo
-    password: _LiubO<666
+    url: jdbc:mysql://ip:port/sid?useSSL=false&amp;useUnicode=true&amp;characterEncoding=UTF-8
+    username: 
+    password: 
     driver-class-name: com.mysql.jdbc.Driver
     dbcp2:
       initial-size: 20
