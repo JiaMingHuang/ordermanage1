@@ -32,7 +32,7 @@ public class OrderController {
 	
 	@RequestMapping("/initOrderPage")
 	public String initOrderPage() {
-		return "/order/order-table";
+		return "order/order-table";
 	}
 
 	@GetMapping("/add")
@@ -45,7 +45,7 @@ public class OrderController {
 		userVO.setAccounttype(3);*/
 		List<UserVO> factory = userService.getFactory(3);
 		model.addAttribute("factory", factory);
-		return "/order/order-form";
+		return "order/order-form";
 	}
 	
 	@RequestMapping("/findAll")
@@ -75,6 +75,8 @@ public class OrderController {
 		List<OrderDetailVO> orderDetailVOList = orderModel.getOrderDetailVOList();
 		for (OrderDetailVO orderDetailVO : orderDetailVOList) {
 			orderDetailVO.setOrderid(orderVO.getId());
+			orderDetailVO.setOrdernumber(orderVO.getOrdernumber());
+			orderDetailVO.setDelflag("0");
 			orderDetailService.addOrderDetail(orderDetailVO);
 		}
 		return true;
@@ -84,7 +86,7 @@ public class OrderController {
 	public String initOrderAlter(Model model, @PathVariable Long id) {
 		model.addAttribute("order", orderService.findById(id).get());
 		model.addAttribute("orderdetails", orderDetailService.findListById(id));
-		return "/order/order-alert";
+		return "order/order-alert";
 	}
 
 	/**
@@ -111,6 +113,12 @@ public class OrderController {
 	public String doGather(@PathVariable Long id){
 		OrderVO orderVO = orderService.findById(id).get();
 		orderVO.setIsgather("1");//如果确认收款则为1，未收款为0
+
+		//订单完成时订单下的商品列表也完成 暂射delFlag为1 即订单已完成\
+		List<OrderDetailVO> orderDetails = orderDetailService.findListById(orderVO.getId());
+		for (OrderDetailVO orderDetail : orderDetails) {
+			orderDetailService.update(orderDetail);
+		}
 		orderService.updateOrderVO(new Date(), id);
 		return "SUCCESS";
 	}

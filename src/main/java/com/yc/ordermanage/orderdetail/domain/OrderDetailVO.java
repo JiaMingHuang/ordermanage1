@@ -2,18 +2,14 @@ package com.yc.ordermanage.orderdetail.domain;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "ORDERDETAIL")
 public class OrderDetailVO {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	private Long id;
 	@Column
 	private Long orderid;
@@ -36,8 +32,18 @@ public class OrderDetailVO {
 	@Column
 	private Date updatedate;
 	@Column
-	private String delflag;
-	
+	private String delflag;//0未完成 1已完成
+	@Column
+	private String ordernumber;
+
+	public String getOrdernumber() {
+		return ordernumber;
+	}
+
+	public void setOrdernumber(String ordernumber) {
+		this.ordernumber = ordernumber;
+	}
+
 	public Long getOrderid() {
 		return orderid;
 	}

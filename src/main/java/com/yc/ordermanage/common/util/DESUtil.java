@@ -56,4 +56,7 @@ public class DESUtil {
 		return decryptedData;
 	}
 
+	public static void main(String args[]){
+		System.out.println(encryptBasedDes("1234"));
+	}
 }

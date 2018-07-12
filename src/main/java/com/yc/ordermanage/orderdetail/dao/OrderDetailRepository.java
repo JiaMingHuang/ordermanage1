@@ -22,4 +22,7 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetailVO, Long
 	@Modifying
 	@Query(value = "UPDATE ORDERDETAIL T SET T.UPDATEDATE = :updatedate,T.AMOUNT = :amount WHERE T.ID = :id", nativeQuery = true)
 	public void updateOrderDetail(@Param("updatedate")Date updatedate, @Param("amount")int amount, @Param("id")Long id);
+
+	@Query(value = "SELECT T.* FROM ORDERDETAIL T WHERE FACTORYID = :factoryid and DELFLAG = :delflag", nativeQuery = true)
+	public List<OrderDetailVO> findOrderDetailById(@Param("factoryid") Long factoryid, @Param("delflag") String delflag);
 }

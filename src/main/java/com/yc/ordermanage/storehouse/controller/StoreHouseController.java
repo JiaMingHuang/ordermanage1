@@ -34,7 +34,7 @@ public class StoreHouseController {
 	
 	@RequestMapping("/initStoreHousePage")
 	public String initStoreHousePage(Model model) {
-		return "/storehouse/storehouse-table";
+		return "storehouse/storehouse-table";
 	}
 	
 	@RequestMapping("selectById/{id}")
@@ -63,20 +63,20 @@ public class StoreHouseController {
 	 */
 	@GetMapping("/add")
 	public String initStoreHouseAdd() {
-		return "/storehouse/storehouse-form";
+		return "storehouse/storehouse-form";
 	}
 	
 	@RequestMapping("/storehouseSave")
 	public String storehouseSave(StoreHouseVO storeHouseVO){
 		storeHouseVO.setCreateDate(new Date());
 		storeHouseService.save(storeHouseVO);
-		return "/storehouse/storehouse-table";
+		return "storehouse/storehouse-table";
 	}
 	
 	@GetMapping("/modifyStoreHouse/{id}")
 	public String modifyStoreHouse(Model model, @PathVariable Long id) {
 		model.addAttribute("storehouse", storeHouseService.findById(id).get());
-		return "/storehouse/storehouse-info";
+		return "storehouse/storehouse-info";
 	}
 	
 	@PostMapping("/update")

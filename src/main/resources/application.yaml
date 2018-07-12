@@ -4,16 +4,16 @@ spring:
     suffix: .html
     cache: false
     encoding: UTF-8
-    mode: HTML5
+    mode: LEGACYHTML5
   jpa:
     show-sql: true
     database: MYSQL
     hibernate:
      ddl-auto: update
   datasource:
-    url: jdbc:mysql://ip:port/sid?useSSL=false&amp;useUnicode=true&amp;characterEncoding=UTF-8
-    username: 
-    password: 
+    url: jdbc:mysql://47.105.103.82:3306/crystal?useSSL=false&amp;useUnicode=true&amp;characterEncoding=UTF-8
+    username: root
+    password: 1234567890
     driver-class-name: com.mysql.jdbc.Driver
     dbcp2:
       initial-size: 20
@@ -22,7 +22,6 @@ spring:
       timeBetweenEvictionRunsMillis: 300000
       numTestsPerEvictionRun: 50
       minEvictableIdleTimeMillis: 3600000
-      max-conn-lifetime-millis:
       min-idle: 5
       max-idle: 50
       max-wait-millis: 10000

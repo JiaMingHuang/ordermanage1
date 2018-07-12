@@ -20,7 +20,7 @@ public class UserController {
 
 	@GetMapping("/main")
 	public String initUserPage() {
-		return "/user/user-main";
+		return "user/user-main";
 	}
 
 	/**
@@ -28,7 +28,7 @@ public class UserController {
 	 */
 	@GetMapping("/add")
 	public String initUserAdd() {
-		return "/user/user-add";
+		return "user/user-add";
 	}
 
 	/**
@@ -37,7 +37,7 @@ public class UserController {
 	@GetMapping("/alter/{id}")
 	public String initUserAlter(Model model, @PathVariable Long id) {
 		model.addAttribute("user", userService.findById(id).get());
-		return "/user/user-alter";
+		return "user/user-alter";
 	}
 
 	@GetMapping("/user/{id}")
