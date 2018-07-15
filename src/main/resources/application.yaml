@@ -29,3 +29,8 @@ logging:
   level:
     com.yc: info
     org.hibernate.SQL: debug
+
+http:
+  multipart:
+    max-file-size: 20MB
+    max-request-size: 20MB
