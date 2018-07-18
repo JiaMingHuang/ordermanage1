@@ -35,6 +35,36 @@ public class OrderDetailVO {
 	private String delflag;//0未完成 1已完成
 	@Column
 	private String ordernumber;
+	@Column
+	private String remark01;//备注
+	@Column
+	private int packagenumber;//装箱数
+	@Column
+	private int totalnumber;//总数量
+
+	public int getTotalnumber() {
+		return totalnumber;
+	}
+
+	public void setTotalnumber(int totalnumber) {
+		this.totalnumber = totalnumber;
+	}
+
+	public int getPackagenumber() {
+		return packagenumber;
+	}
+
+	public void setPackagenumber(int packagenumber) {
+		this.packagenumber = packagenumber;
+	}
+
+	public String getRemark01() {
+		return remark01;
+	}
+
+	public void setRemark01(String remark01) {
+		this.remark01 = remark01;
+	}
 
 	public String getOrdernumber() {
 		return ordernumber;
