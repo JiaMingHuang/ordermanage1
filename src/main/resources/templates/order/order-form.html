@@ -54,7 +54,7 @@
 			<div class="panel-body">
 			<button id="add" type="button" class="btn btn-primary" onclick="test()">添加商品</button>
 			</div>
-			<form id="batchimport" th:method="post" th:action="@{/order/batchImport}">
+			<form id="batchimport" th:method="post" th:action="@{/order/batchImport}" enctype="multipart/form-data">
 				<div class="panel-body">
 					<input class="btn btn-primary" type="file" name="file">
 					<input class="btn btn-primary" type="submit" value="上传"/>

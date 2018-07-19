@@ -228,16 +228,19 @@ public class OrderController {
 		}
 		//步骤二，开始将excel数据导入数据库
 		if(null != orderDetailVOList && orderDetailVOList.size() > 0){
-			//分批插入数据库
+			/*//分批插入数据库
 			int idx = 0;
 			for (int i=0; i<orderDetailVOList.size(); i++){
 				if(i % 50 == 0 && i != 0){
 					List<OrderDetailVO> temp = orderDetailVOList.subList(idx,i);
-
 				}
-			}
+			}*/
+
+			orderDetailService.batchInsert(orderDetailVOList);
 		}
-		return null;
+		result = "导入成功";
+		map.put("success",result);
+		return map;
 	}
 
 	/**
@@ -310,6 +313,8 @@ public class OrderController {
 					}
 				}
 			}
+			orderDetailVO.setCreatedate(new Date());
+			orderDetailVO.setUpdatedate(new Date());
 			return orderDetailVO;
 		}else{
 			return null;

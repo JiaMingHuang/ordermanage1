@@ -2,7 +2,6 @@ package com.yc.ordermanage.orderdetail.service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,11 +10,16 @@ import org.springframework.transaction.annotation.Transactional;
 import com.yc.ordermanage.orderdetail.dao.OrderDetailRepository;
 import com.yc.ordermanage.orderdetail.domain.OrderDetailVO;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 @Service
 public class OrderDetailService {
 
 	@Autowired
 	private OrderDetailRepository orderDetailRepository;
+	@PersistenceContext
+	protected EntityManager entityManager;
 	
 	@Transactional
 	public OrderDetailVO addOrderDetail(OrderDetailVO orderDetailVO) {
@@ -57,4 +61,15 @@ public class OrderDetailService {
 		orderDetail.setDelflag("1");
 		return orderDetailRepository.save(orderDetail);
 	}
+
+	@Transactional
+    public void batchInsert(List<OrderDetailVO> orderDetailVOList) {
+		for (int i=0; i<orderDetailVOList.size(); i++){
+			entityManager.persist(orderDetailVOList.get(i));
+			if(i % 50 == 0){
+				entityManager.flush();
+				entityManager.clear();
+			}
+		}
+    }
 }
