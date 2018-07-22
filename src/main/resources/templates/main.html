@@ -22,19 +22,18 @@
                        id="order-table">
                     <thead id="head-1">
                     <tr>
-                        <th>序号</th>
                         <th>订单编号</th>
                         <th>订单类型</th>
                         <th>客户名称</th>
                         <th>联系电话</th>
-                        <th>客户要求交货时间</th>
+                        <!--<th>客户要求交货时间</th>-->
                         <th>工厂交货时间</th>
+                        <th>订单创建时间</th>
                         <th>操作</th>
                     </tr>
                     </thead>
                     <thead id="head-2">
                     <tr>
-                        <th>序号</th>
                         <th>订单编号</th>
                         <th>品名规格颜色</th>
                         <th>数量</th>
@@ -50,7 +49,6 @@
 <script type="text/javascript">
 
     $(document).ready(function() {
-
         var index = [[${session.currentUser.accounttype}]];
         var factoryid = [[${session.currentUser.id}]];
         if(index == 3 || index == 4){
@@ -79,7 +77,6 @@
                 data.forEach((val, index, data) => {
                     _dom += `
                         <tr>
-                            <td>${val.id}</td>
                             <td>${val.ordernumber}</td>
                             <td>${val.name_spec_color}</td>
                             <td>${val.amount}</td>
@@ -87,14 +84,13 @@
                         `;
                 });
                 $("#order-tbody").replaceWith(`<tbody id="order-tbody">${_dom}</tbody>`);
-                $("#order-table").DataTable({
+                $(`#order-table`).DataTable({
                     responsive: true,
-                    destroy:true
+                    destroy: true
                 });
             }
         });
     }
-
     //店铺初始查询
     function initData() {
         $.ajax({
@@ -107,13 +103,12 @@
                 data.forEach((val, index, data) => {
                     _dom += `
                         <tr>
-                            <td>${val.id}</td>
                             <td>${val.ordernumber}</td>
                             <td>${val.ordertype}</td>
                             <td>${val.clientname}</td>
                             <td>${val.contact}</td>
-                            <td>${val.clientdeliverytime == null ? "--" : new Date(val.clientdeliverytime).Format("yyyy-MM-dd HH:mm:ss")}</td>
                             <td>${val.factorydeliverytime == null ? "--" : new Date(val.factorydeliverytime).Format("yyyy-MM-dd HH:mm:ss")}</td>
+                            <td>${val.createdate == null ? "--" : new Date(val.createdate).Format("yyyy-MM-dd HH:mm:ss")}</td>
                             <td>
                             	&nbsp;
                             	<button class="fa fa-edit" data-toggle="modal" data-target="#myModal" onclick="doAlterOrder(${val.id});"></button>
@@ -132,7 +127,8 @@
                 $("#order-tbody").replaceWith(`<tbody id="order-tbody">${_dom}</tbody>`);
                 $("#order-table").DataTable({
                     responsive: true,
-                    destroy:true
+                    destroy: true,
+                    'ordering': false
                 });
             }
         });
@@ -219,13 +215,12 @@
                 data.forEach((val, index, data) => {
                     _dom += `
                         <tr>
-                            <td>${val.id}</td>
                             <td>${val.ordernumber}</td>
                             <td>${val.ordertype}</td>
                             <td>${val.clientname}</td>
                             <td>${val.contact}</td>
-                            <td>${val.clientdeliverytime == null ? "--" : new Date(val.clientdeliverytime).Format("yyyy-MM-dd HH:mm:ss")}</td>
                             <td>${val.factorydeliverytime == null ? "--" : new Date(val.factorydeliverytime).Format("yyyy-MM-dd HH:mm:ss")}</td>
+                            <td>${val.createdate == null ? "--" : new Date(val.createdate).Format("yyyy-MM-dd HH:mm:ss")}</td>
                             <td>
                             	&nbsp;
                             	<button class="fa fa-edit" data-toggle="modal" data-target="#myModal" onclick="doAlterOrder(${val.id});"></button>

@@ -8,7 +8,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @Controller
@@ -82,4 +81,9 @@ public class UserController {
 		return userService.findByUserid(user.getUserid());
 	}
 
+	@PostMapping("/queryByType/{accounttype}")
+	@ResponseBody
+	public List<UserVO> queryByType(@PathVariable Integer accounttype) {
+		return userService.queryByType(accounttype);
+	}
 }

@@ -1,16 +1,17 @@
 <div class="panel-body">
 <form id="order-add-form">
-	<div class="form-group">
+	<div class="form-group" style="padding-left: 15px; padding-right: 15px">
 		<label>订单类型：</label> 
 		<input class="radio_btn" type="radio" name="ordertype" value="1" checked/>工厂订单
 		<input class="radio_btn" type="radio" name="ordertype" value="2"/>电镀厂订单
 	</div>
 	<div class="form-group">
-		<label>订单编号：</label> <input class="form-control"
-			name="ordernumber"/>
-	</div>
-	<div class="form-group">
-		<label>客户名称：</label> <input class="form-control" name="clientname"/>
+		<div class="col-xs-6">
+			<label>订单编号：</label> <input class="form-control" name="ordernumber"/>
+		</div>
+		<div class="col-xs-6">
+			<label>客户名称：</label> <input class="form-control" name="clientname"/>
+		</div>
 	</div>
 	<div class="form-group">
 		<label>客户要求发货时间：</label> <input class="form-control" name="clientdeliverytime" type="date"/>
@@ -24,139 +25,91 @@
 	<div class="form-group">
 		<label>送货地址：</label> <input class="form-control" name="address"/>
 	</div>
-	<input class="form-group">
+	<div class="form-group">
 		<label>退货重镀原因：</label> <input class="form-control" name="reason"/>
 	</div>
 </form>
 </div>
+
 <div class="panel-body">
 	<div class="order_table table-responsive">
 		<div class="page-header part_header">
 			<h1>
-				<small>商品详情</small>
+				<small>商品详情批量导入</small>
 			</h1>
 		</div>
-		<!-- ======================================================================================== -->
-		<div id="ddd">
-
-				<form id="testform">
-					<label>品名规格颜色： <input class="form-control" name="name_spec_color" id="testform_name_spec_color"/></label>
-					<label>单位： <input class="form-control" name="unit" id="testform_unit"/></label>
-					<label>单价：<input class="form-control" name="price" id="testform_price"/></label>
-					<label>数量： <input class="form-control" name="amount" id="testform_amount"/></label>
-					<label>总价： <input class="form-control" name="total" id="testform_total"/></label>
-					<label>工厂：
-					<select class="form-control" name="factoryid" id="testform_factoryid">
-						<option>请选择指定工厂</option>
-						<option  th:each="factory:${factory}" th:value="${factory.id}" th:text="${factory.companyname}"></option>
-					</select></label>
-					</form>
-			<div class="panel-body">
-			<button id="add" type="button" class="btn btn-primary" onclick="test()">添加商品</button>
-			</div>
-			<form id="batchimport" th:method="post" th:action="@{/order/batchImport}" enctype="multipart/form-data">
-				<div class="panel-body">
-					<input class="btn btn-primary" type="file" name="file">
-					<input class="btn btn-primary" type="submit" value="上传"/>
-				</div>
-			</form>
-		</div>
-		<div class="panel-heading">商品列表</div>
+		<!--<form id="batchimport" th:method="post" th:action="@{/order/batchImport}" enctype="multipart/form-data">-->
 		<div class="panel-body">
-			<table width="100%"
-				class="table table-striped table-bordered table-hover" id="order-list">
-				<thead>
-					<tr>
-						<th>name_spec_color</th>
-						<th>unit</th>
-						<th>price</th>
-						<th>amount</th>
-						<th>total</th>
-						<th>factoryid</th>
-						<th></th>
-					</tr>
-				</thead>
-				<tbody id="list-tbody"></tbody>
-			</table>
+			<input class="btn btn-primary" type="file" name="uploadFile" id="uploadFile">
+			<button onclick="importExp();">导入</button>
+			<div>导入文件仅允许导入“xls”或“xlsx”格式文件！</div>
 		</div>
-		<!-- ======================================================================================== -->
+		<!--</form>-->
+		<div class="save_btn_container">
+			<button type="button" class="btn btn-primary" onclick="batchImport();">保存</button>
+		</div>
 	</div>
-	<div class="save_btn_container">
-		<button type="button" class="btn btn-primary" onclick="saveOrder();">保存</button>
-	</div>
-	
 </div>
 
 <style type="text/css">
 .form-control {
 	width: 80%
 }
+
 </style>
 <script>
-	function addTable() {
-        var form = $("#testform").serializeObject();
-        let dom = `
-        <tr>
-            <td>${form.name_spec_color}</td>
-            <td>${form.unit}</td>
-            <td>${form.price}</td>
-            <td>${form.amount}</td>
-            <td>${form.total}</td>
-            <td>${form.factoryid}</td>
-            <td>
-                <button class="fa fa-trash-o" onclick="deletedom(this);"></button>
-            </td>
-        </tr>
-        `;
-        $("#list-tbody").append(dom);
 
-        $("#testform_name_spec_color").val("");
-        $("#testform_unit").val("");
-        $("#testform_price").val("");
-        $("#testform_amount").val("");
-        $("#testform_total").val("");
-        $("#testform_factoryid").val("");
-    }
-	//商品表格
-    function test() {
-        /*$("#testform label input").each(function () {
-			if($(this).val() == ""){
-                document.getElementById("ddd").className = "has-error";
-				console.log(111);
-			}*/
-                addTable();
-
-
-
-
-    }
-
-    //删除商品
-    function deletedom(dom) {
-        $(dom).parent().parent().remove();
-    }
-
-    function saveOrder(){
-    	var orderVO = $("#order-add-form").serializeObject();// 序列化表单内容
-    	var orderDetailVOList = $("#order-list").tableToJSON();
-    	console.log(orderVO);
-    	console.log(orderDetailVOList);
-    	var orderModel = {
-    			orderVO :orderVO,
-    			orderDetailVOList : orderDetailVOList
-            };
-    	$.ajax({
+    function batchImport() {
+        var orderVO = $("#order-add-form").serializeObject();// 序列化表单内容
+        var orderModel = {
+            orderVO: orderVO
+        };
+        $.ajax({
             type: "POST",
             url: "/order/form",
             data: JSON.stringify(orderModel),
             dataType: "json",
             async: false,
-            contentType:"application/json",
+            contentType: "application/json",
             context: document.body,
             success: function (data) {
-                //alert(data);
-                $("#myModal").click();
-                initData();
+                if (data.FLAG == true) {
+                    //订单主信息保存成功，则开始导入excel
+                    importExp(data.ORDERID);
+                }
+
+            },
+            error: function (data) {
+                // 提示新增失败
+            }
+        });
+    }
+
+    function importExp(orderId) {
+        var formData = new FormData();
+        var name = $("#uploadFile").val();
+        formData.append("file", $("#uploadFile")[0].files[0]);
+        formData.append("name", name);
+        $.ajax({
+            type: "POST",
+            url: `/order/batchImport/${orderId}`,
+            data: formData,
+            dataType: "json",
+            async: false,
+            processData: false,
+            contentType: false,
+            context: document.body,
+            beforeSend: function () {
+                console.log("正在进行，请稍候");
+            },
+            success: function (data) {
+                if (data.flag == false) {
+                    alert(data.msg);
+                } else {
+                    alert(data.msg);
+                    $("#myModal").click();
+                    initData();
+                }
             },
             error: function (data) {
                 // 提示新增失败

@@ -1,17 +1,15 @@
 package com.yc.ordermanage.orderdetail.service;
 
-import java.util.Date;
-import java.util.List;
-
+import com.yc.ordermanage.orderdetail.dao.OrderDetailRepository;
+import com.yc.ordermanage.orderdetail.domain.OrderDetailVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.yc.ordermanage.orderdetail.dao.OrderDetailRepository;
-import com.yc.ordermanage.orderdetail.domain.OrderDetailVO;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.Date;
+import java.util.List;
 
 @Service
 public class OrderDetailService {
@@ -34,9 +32,23 @@ public class OrderDetailService {
 
 	@Transactional
 	public void updateOrderDetail(OrderDetailVO orderDetailVO) {
-		orderDetailVO.setUpdatedate(new Date());
-		orderDetailVO.setAmount(orderDetailVO.getAmount() - orderDetailVO.getActual_take_amount());
-		orderDetailRepository.updateOrderDetail(orderDetailVO.getUpdatedate(),orderDetailVO.getAmount(),orderDetailVO.getId());
+		OrderDetailVO temp = findOneById(orderDetailVO.getId());
+		temp.setUpdatedate(new Date());
+		//orderDetailVO.setAmount(orderDetailVO.getAmount() - orderDetailVO.getActual_take_amount());
+		//orderDetailRepository.updateOrderDetail(orderDetailVO.getUpdatedate(),orderDetailVO.getAmount(),orderDetailVO.getId());
+		temp.setActual_take_amount(orderDetailVO.getActual_take_amount());
+		temp.setActual_take_total(orderDetailVO.getActual_take_amount());
+		temp.setFactory_not_delivery_amount(orderDetailVO.getActual_take_amount());
+		temp.setFactory_not_delivery_totalnumber(orderDetailVO.getActual_take_amount());
+		temp.setFactory_not_delivery_total(orderDetailVO.getActual_take_amount());
+		temp.setStorehouse_actual_take_amount(orderDetailVO.getActual_take_amount());
+		temp.setStorehouse_actual_take_totalnumber(orderDetailVO.getActual_take_amount());
+		temp.setStorehouse_actual_take_total(orderDetailVO.getActual_take_amount());
+		orderDetailRepository.save(temp);
+	}
+
+	private OrderDetailVO findOneById(Long id) {
+		return orderDetailRepository.findOneById(id);
 	}
 
 	public static void main(String[] args) {

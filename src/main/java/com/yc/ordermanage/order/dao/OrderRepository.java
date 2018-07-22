@@ -1,14 +1,13 @@
 package com.yc.ordermanage.order.dao;
 
-import java.util.Date;
-import java.util.List;
-
+import com.yc.ordermanage.order.domain.OrderVO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-
-import com.yc.ordermanage.order.domain.OrderVO;
 import org.springframework.data.repository.query.Param;
+
+import java.util.Date;
+import java.util.List;
 
 public interface OrderRepository extends JpaRepository<OrderVO, Long> {
 
@@ -25,7 +24,7 @@ public interface OrderRepository extends JpaRepository<OrderVO, Long> {
 	@Override
 	public OrderVO save(OrderVO orderVO);
 
-	@Query(value = "SELECT T.* FROM T_ORDER T WHERE T.ISGATHER = :isgather", nativeQuery = true)
+	@Query(value = "SELECT T.* FROM T_ORDER T WHERE T.ISGATHER = :isgather ORDER BY T.CREATEDATE DESC", nativeQuery = true)
 	public List<OrderVO> findUnfinishedOrder(@Param("isgather") String isgather);
 
 	@Query(value = "SELECT T.* FROM T_ORDER T WHERE T.ISGATHER = :isgather", nativeQuery = true)

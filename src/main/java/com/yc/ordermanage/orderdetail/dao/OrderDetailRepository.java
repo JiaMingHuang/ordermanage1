@@ -1,14 +1,13 @@
 package com.yc.ordermanage.orderdetail.dao;
 
-import java.util.Date;
-import java.util.List;
-
+import com.yc.ordermanage.orderdetail.domain.OrderDetailVO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.yc.ordermanage.orderdetail.domain.OrderDetailVO;
+import java.util.Date;
+import java.util.List;
 
 public interface OrderDetailRepository extends JpaRepository<OrderDetailVO, Long>{
 
@@ -25,4 +24,7 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetailVO, Long
 
 	@Query(value = "SELECT T.* FROM ORDERDETAIL T WHERE FACTORYID = :factoryid and DELFLAG = :delflag", nativeQuery = true)
 	public List<OrderDetailVO> findOrderDetailById(@Param("factoryid") Long factoryid, @Param("delflag") String delflag);
+
+	@Query(value = "SELECT T.* FROM ORDERDETAIL T WHERE T.ID = :id", nativeQuery = true)
+	public OrderDetailVO findOneById(@Param("id") Long id);
 }

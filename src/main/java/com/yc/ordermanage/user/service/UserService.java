@@ -4,11 +4,8 @@ import com.yc.ordermanage.common.util.DESUtil;
 import com.yc.ordermanage.user.dao.UserRepository;
 import com.yc.ordermanage.user.domain.UserVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.Date;
 import java.util.List;
@@ -63,5 +60,9 @@ public class UserService {
 	
 	public List<UserVO> getFactory(Integer accounttype){
 		return userRepository.getFactory(accounttype);
+	}
+
+	public List<UserVO> queryByType(Integer accounttype) {
+		return userRepository.queryByType(accounttype);
 	}
 }

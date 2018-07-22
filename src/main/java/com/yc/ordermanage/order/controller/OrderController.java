@@ -1,16 +1,5 @@
 package com.yc.ordermanage.order.controller;
 
-import java.io.InputStream;
-import java.util.*;
-
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.apache.poi.ss.usermodel.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.*;
-
 import com.yc.ordermanage.order.domain.OrderModel;
 import com.yc.ordermanage.order.domain.OrderVO;
 import com.yc.ordermanage.order.service.OrderService;
@@ -18,9 +7,17 @@ import com.yc.ordermanage.orderdetail.domain.OrderDetailVO;
 import com.yc.ordermanage.orderdetail.service.OrderDetailService;
 import com.yc.ordermanage.user.domain.UserVO;
 import com.yc.ordermanage.user.service.UserService;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.usermodel.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpSession;
+import java.io.InputStream;
+import java.util.*;
 
 @RequestMapping("/order")
 @Controller
@@ -71,7 +68,7 @@ public class OrderController {
 	* @author kaming.Van.hwang
 	* @date 2018年6月28日上午1:39:34
 	 */
-	@RequestMapping("/form")
+	/*@RequestMapping("/form")
 	@ResponseBody
 	public Boolean putUser(@RequestBody OrderModel orderModel) {
 		OrderVO orderVO = orderService.addOrder(orderModel.getOrderVO());
@@ -83,7 +80,22 @@ public class OrderController {
 			orderDetailService.addOrderDetail(orderDetailVO);
 		}
 		return true;
+	}*/
+
+	/**
+	 * @param orderModel
+	 * @return
+	 */
+	@RequestMapping("/form")
+	@ResponseBody
+	public Map<String, Object> postOrderMainInfo(@RequestBody OrderModel orderModel) {
+		OrderVO orderVO = orderService.addOrder(orderModel.getOrderVO());
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("FLAG", true);
+		map.put("ORDERID", orderVO.getId());
+		return map;
 	}
+
 	
 	@GetMapping("/alter/{id}")
 	public String initOrderAlter(Model model, @PathVariable Long id) {
@@ -170,17 +182,19 @@ public class OrderController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/batchImport")
+	@RequestMapping("/batchImport/{orderId}")
 	@ResponseBody
-	public Map<String,String> batchImport(MultipartFile file) throws Exception{
+	public Map<String, Object> batchImport(MultipartFile file, @PathVariable Long orderId) throws Exception{
 		String result = "";
-		Map<String,String> map = new HashMap<>();
+		Map<String, Object> map = new HashMap<>();
 		List<OrderDetailVO> orderDetailVOList = new ArrayList<>();
 		try {
 			//校验文件格式
 			if (!file.getOriginalFilename().endsWith(".xls") && !file.getOriginalFilename().endsWith(".xlsx")) {
+				orderService.deleteById(orderId);//导入的excel文件有误则删除原保存的订单主信息
 				result = "请上传.xls或.xlsx格式文件";
-				map.put("failure",result);
+				map.put("flag", false);
+				map.put("msg",result);
 				return map;
 			}
 			InputStream inputStream = file.getInputStream();
@@ -206,24 +220,32 @@ public class OrderController {
 						continue;
 					}
 					index++;
-					OrderDetailVO orderDetailVO = checkExcel(row,index);
-					if(StringUtils.isEmpty(orderDetailVO.getRemark01())){//remark01为辨识是否正确数据的flag，若为空，则该行数据正确，若不为空，则该行数据有误
+					OrderDetailVO orderDetailVO = checkExcel(row, index);
+					if (StringUtils.isEmpty(orderDetailVO.getRemark01())) {
+						//remark01为辨识是否正确数据的flag，若为空，则该行数据正确，若不为空，则该行数据有误
+						orderDetailVO.setOrderid(orderId);
 						orderDetailVOList.add(orderDetailVO);
-					}else{
+					} else {
+						orderService.deleteById(orderId);//导入的excel文件有误则删除原保存的订单主信息
 						result = orderDetailVO.getRemark01();
-						map.put("failure",result);
+						map.put("flag", false);
+						map.put("msg",result);
 						return map;
 					}
 				}
 				if (flag == false && index == 1) {
+					orderService.deleteById(orderId);//导入的excel文件有误则删除原保存的订单主信息
 					result = "数据不能为空或导入的列表第一行为空，请更正后重新导入";
-					map.put("failure",result);
+					map.put("flag", false);
+					map.put("msg",result);
 					return map;
 				}
 			}
 		} catch (InvalidFormatException e) {
+			orderService.deleteById(orderId);//导入的excel文件有误则删除原保存的订单主信息
 			result = "导入步骤一校验数据出现异常：" + e.getMessage();
-			map.put("failure",result);
+			map.put("flag", false);
+			map.put("msg",result);
 			return map;
 		}
 		//步骤二，开始将excel数据导入数据库
@@ -239,7 +261,8 @@ public class OrderController {
 			orderDetailService.batchInsert(orderDetailVOList);
 		}
 		result = "导入成功";
-		map.put("success",result);
+		map.put("flag", true);
+		map.put("msg",result);
 		return map;
 	}
 
@@ -267,8 +290,8 @@ public class OrderController {
 							orderDetailVO.setPackagenumber((int)cell.getNumericCellValue());
 							break;
 						}
-						case 总数量:{
-							orderDetailVO.setTotalnumber((int)cell.getNumericCellValue());
+						case 总数量: {
+							orderDetailVO.setTotalnumber((int) cell.getNumericCellValue());
 							break;
 						}
 						case 单位:{
