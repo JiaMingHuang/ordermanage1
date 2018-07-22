@@ -1,7 +1,7 @@
 package com.yc.ordermanage.order.controller;
 
 public enum RowColum {
-    型号品名颜色(0), 件数(1), 装箱数(2), 总数量(3), 单位(4), 单价(5), 总金额(6), 厂家(7);
+    型号品名颜色(0), 件数(1), 装箱数(2), 总数量(3), 单位(4), 单价(5), 总金额(6), 厂家(7), 自填厂家(8);
     private int index;
 
     RowColum(int index) {

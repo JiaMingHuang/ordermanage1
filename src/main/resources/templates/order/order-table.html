@@ -101,23 +101,27 @@
                 success: function (data) {
                     let _dom;
                     data.forEach((val, index, data) => {
+                        let ordertype = val.ordertype;
+                        if ("1" == ordertype) {
+                            ordertype = "工厂订单";
+                        } else if ("2" == ordertype) {
+                            ordertype = "电镀厂订单";
+                        }
                         _dom += `
                         <tr>
                             <td>${val.ordernumber}</td>
-                            <td>${val.ordertype}</td>
+                            <td>${ordertype}</td>
                             <td>${val.clientname}</td>
                             <td>${val.contact}</td>
                             <td>${val.factorydeliverytime == null ? "--" : new Date(val.factorydeliverytime).Format("yyyy-MM-dd HH:mm:ss")}</td>
                             <td>${val.createdate == null ? "--" : new Date(val.createdate).Format("yyyy-MM-dd HH:mm:ss")}</td>
                             <td>
                             	&nbsp;
-                                <button class="btn btn-default" data-toggle="modal" data-target="#myModal" onclick="doAlterOrder(${val.id});">总单</button>
+                                <button class="btn btn-default" data-toggle="modal" data-target="#myModal" onclick="doAlterOrder(${val.id},1);">总单</button>
                                 &nbsp;
-                                <button class="btn btn-default" data-toggle="modal" data-target="#myModal" onclick="doAlterOrder(${val.id});">厂家未交情况</button>
+                                <button class="btn btn-default" data-toggle="modal" data-target="#myModal" onclick="factoryNotDeliver(${val.id},2);">厂家未交情况</button>
                                 &nbsp;
-                                <button class="btn btn-default" data-toggle="modal" data-target="#myModal" onclick="doAlterOrder(${val.id});">仓库实收订单</button>
-                            	&nbsp;
-                            	<button class="fa fa-edit" data-toggle="modal" data-target="#myModal" onclick="doAlterOrder(${val.id});"></button>
+                                <button class="btn btn-default" data-toggle="modal" data-target="#myModal" onclick="storehouseActualTake(${val.id},3);">仓库实收订单</button>
                                 &nbsp;
                                 <button class="${val.istakeover == '0' ? 'btn btn-primary btn-sm': 'hidden'}" onclick="fnTakeOver(${val.id});" >确认收货</button>
                                 <button class="${val.istakeover == '1' ? 'btn btn-primary btn-sm disabled': 'hidden'}" >已经收货</button>
@@ -205,10 +209,18 @@
     	$("#order-add").click(function () {
             $("#myModal-content").load("/order/add");
         });
-    	
-    	function doAlterOrder(id){
-            $("#myModal-content").load(`/order/alter/${id}`);
-        }
+
+ function doAlterOrder(id, index) {
+     $("#myModal-content").load(`/order/alter/${id}&${index}`);
+ }
+
+ function factoryNotDeliver(id, index) {
+     $("#myModal-content").load(`/order/alter/${id}&${index}`);
+ }
+
+ function storehouseActualTake(id, index) {
+     $("#myModal-content").load(`/order/alter/${id}&${index}`);
+ }
 
  function findFinishedOrder() {
      $.ajax({
@@ -219,10 +231,16 @@
          success: function (data) {
              let _dom;
              data.forEach((val, index, data) => {
+                 let ordertype = val.ordertype;
+                 if ("1" == ordertype) {
+                     ordertype = "工厂订单";
+                 } else if ("2" == ordertype) {
+                     ordertype = "电镀厂订单";
+                 }
                  _dom += `
                         <tr>
                             <td>${val.ordernumber}</td>
-                            <td>${val.ordertype}</td>
+                            <td>${ordertype}</td>
                             <td>${val.clientname}</td>
                             <td>${val.contact}</td>
                             <td>${val.factorydeliverytime == null ? "--" : new Date(val.factorydeliverytime).Format("yyyy-MM-dd HH:mm:ss")}</td>

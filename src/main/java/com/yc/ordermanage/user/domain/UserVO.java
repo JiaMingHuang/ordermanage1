@@ -14,7 +14,7 @@ public class UserVO {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	/**
-	 * 用户名
+	 * 用户登录名
 	 */
 	@Column
 	private String userid;
@@ -78,6 +78,21 @@ public class UserVO {
 	 */
 	@Column
 	private Integer delflag;
+
+	/**
+	 * 用于excel显示
+	 * 中文简称
+	 */
+	@Column
+	private String chinesename;
+
+	public String getChinesename() {
+		return chinesename;
+	}
+
+	public void setChinesename(String chinesename) {
+		this.chinesename = chinesename;
+	}
 
 	public Long getId() {
 		return id;

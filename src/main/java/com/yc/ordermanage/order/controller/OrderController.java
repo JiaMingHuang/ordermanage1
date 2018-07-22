@@ -1,5 +1,6 @@
 package com.yc.ordermanage.order.controller;
 
+import com.yc.ordermanage.common.util.ChangeToPinYin;
 import com.yc.ordermanage.order.domain.OrderModel;
 import com.yc.ordermanage.order.domain.OrderVO;
 import com.yc.ordermanage.order.service.OrderService;
@@ -58,6 +59,10 @@ public class OrderController {
 	@DeleteMapping("/deleteById/{id}")
 	@ResponseBody
 	public Boolean deleteById(@PathVariable Long id) {
+		List<OrderDetailVO> orderDetailVOList = orderDetailService.findListById(id);
+		if (orderDetailVOList.size() != 0) {
+			orderDetailService.batchDelete(orderDetailVOList);
+		}
 		return orderService.deleteById(id);
 	}
 	
@@ -96,12 +101,18 @@ public class OrderController {
 		return map;
 	}
 
-	
-	@GetMapping("/alter/{id}")
-	public String initOrderAlter(Model model, @PathVariable Long id) {
+
+	@GetMapping("/alter/{id}&{index}")
+	public String initOrderAlter(Model model, @PathVariable Long id, @PathVariable int index) {
 		model.addAttribute("order", orderService.findById(id).get());
 		model.addAttribute("orderdetails", orderDetailService.findListById(id));
-		return "order/order-alert";
+		if (1 == index) {
+			return "order/order-alert";
+		} else if (2 == index) {
+			return "order/order-factory-not-delivery";
+		} else {
+			return "order/order-storehouse-actual-take";
+		}
 	}
 
 	/**
@@ -220,7 +231,7 @@ public class OrderController {
 						continue;
 					}
 					index++;
-					OrderDetailVO orderDetailVO = checkExcel(row, index);
+					OrderDetailVO orderDetailVO = checkExcel(row, index, orderId);
 					if (StringUtils.isEmpty(orderDetailVO.getRemark01())) {
 						//remark01为辨识是否正确数据的flag，若为空，则该行数据正确，若不为空，则该行数据有误
 						orderDetailVO.setOrderid(orderId);
@@ -250,14 +261,6 @@ public class OrderController {
 		}
 		//步骤二，开始将excel数据导入数据库
 		if(null != orderDetailVOList && orderDetailVOList.size() > 0){
-			/*//分批插入数据库
-			int idx = 0;
-			for (int i=0; i<orderDetailVOList.size(); i++){
-				if(i % 50 == 0 && i != 0){
-					List<OrderDetailVO> temp = orderDetailVOList.subList(idx,i);
-				}
-			}*/
-
 			orderDetailService.batchInsert(orderDetailVOList);
 		}
 		result = "导入成功";
@@ -271,19 +274,27 @@ public class OrderController {
 	 * @param index
 	 * @return
 	 */
-	private OrderDetailVO checkExcel(Row row, int index) {
-		if(null != row){
+	private OrderDetailVO checkExcel(Row row, int index, Long orderId) {
+		OrderVO orderVO = orderService.findOneById(orderId);
+		List<UserVO> factoryUsers = null;
+		if ("1".equals(orderVO.getOrdertype())) {
+			factoryUsers = userService.getFactory(3);
+		} else if ("2".equals(orderVO.getOrdertype())) {
+			factoryUsers = userService.getFactory(4);
+		}
+
+		if (null != row) {
 			OrderDetailVO orderDetailVO = new OrderDetailVO();
 			for(RowColum rColum : RowColum.values()){
 				Cell cell = row.getCell(rColum.getIndex());
-				if(null != cell){
+				if (null != cell) {
 					switch (rColum){
 						case 型号品名颜色:{
-							orderDetailVO.setName_spec_color(cell.getStringCellValue());
+							orderDetailVO.setName_spec_color(cell.getStringCellValue().trim());
 							break;
 						}
 						case 件数:{
-							orderDetailVO.setAmount((int)cell.getNumericCellValue());
+							orderDetailVO.setAmount((int) cell.getNumericCellValue());
 							break;
 						}
 						case 装箱数:{
@@ -295,7 +306,7 @@ public class OrderController {
 							break;
 						}
 						case 单位:{
-							orderDetailVO.setUnit(cell.getStringCellValue());
+							orderDetailVO.setUnit(cell.getStringCellValue().trim());
 							break;
 						}
 						case 单价:{
@@ -307,11 +318,54 @@ public class OrderController {
 							break;
 						}
 						case 厂家:{
-							/*String factory = cell.getStringCellValue();
-							if("金奇".equals(factory)){
-								orderDetailVO.setFactoryid();
-							}*/
+							if (!StringUtils.isEmpty(cell.getStringCellValue().trim())) {
+								String factoryName = cell.getStringCellValue().trim();
+								for (UserVO fcyUser : factoryUsers) {
+									if (fcyUser.getChinesename().equals(factoryName)) {
+										orderDetailVO.setFactoryid(fcyUser.getId());
+										orderDetailVO.setFactorychinesename(fcyUser.getChinesename());
+										break;
+									}
+								}
+							}
 							break;
+						}
+						case 自填厂家: {
+							boolean flag = true;
+							//先检查与数据库是否有匹配，有匹配的则使用原有的厂家
+							//若不存在则新增厂家，新增一个工厂用户并且初始密码为123
+							if (null == orderDetailVO.getFactoryid()) {
+								String newFcyName = cell.getStringCellValue().trim();
+								//先校验user表中是否存在该用户
+								for (UserVO user : factoryUsers) {
+									if (newFcyName.equals(user.getChinesename())) {
+										//已存在相同值，则取该值id即可
+										flag = false;
+										orderDetailVO.setFactoryid(user.getId());
+										orderDetailVO.setFactorychinesename(user.getChinesename());
+										break;
+									}
+								}
+								if (flag == true) {
+									String pinyinName = ChangeToPinYin.getPingYin(newFcyName);
+									UserVO userVO = new UserVO();
+									userVO.setUserid(pinyinName);
+									userVO.setPassword("123");
+									userVO.setChinesename(newFcyName);
+									if ("1".equals(orderVO.getOrdertype())) {
+										userVO.setAccounttype(3);
+									} else if ("2".equals(orderVO.getOrdertype())) {
+										userVO.setAccounttype(4);
+									}
+									UserVO newFcyUser = userService.createUser(userVO);
+									orderDetailVO.setFactoryid(newFcyUser.getId());
+									orderDetailVO.setFactorychinesename(newFcyName);
+									break;
+								} else {
+									break;
+								}
+
+							}
 						}
 						default:
 							break;
@@ -331,8 +385,8 @@ public class OrderController {
 						orderDetailVO.setRemark01("第" + index + "行的型号品名颜色为空，请填写完整后重新上传");
 					}else if(rColum == RowColum.总金额){
 						orderDetailVO.setRemark01("第" + index + "行的总金额为空，请填写完整后重新上传");
-					}else if(rColum == RowColum.厂家){
-						orderDetailVO.setRemark01("第" + index + "行的厂家为空，请填写完整后重新上传");
+					} else if (rColum == RowColum.自填厂家 && null == orderDetailVO.getFactoryid()) {
+						orderDetailVO.setRemark01("第" + index + "行的厂家都为空，请填写完整后重新上传");
 					}
 				}
 			}

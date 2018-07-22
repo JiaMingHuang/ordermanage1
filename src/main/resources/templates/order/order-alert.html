@@ -4,7 +4,7 @@
 
         <div class="page-header part_header">
             <h1 style="margin-top: 10px">
-                <small>商品详情</small>
+                <small>订单详情</small>
             </h1>
         </div>
         <div class="panel-body">
@@ -21,6 +21,9 @@
                     <th>总金额</th>
                     <th>工厂</th>
                     <th>实际收货数量</th>
+                    <th>收货数量</th>
+                    <th>工厂未交件数</th>
+                    <th>工厂未交数量</th>
                 </tr>
                 <tr hidden>
                     <th>name_spec_color</th>
@@ -32,6 +35,9 @@
                     <th>total</th>
                     <th>factoryid</th>
                     <th>actual_take_amount</th>
+                    <th>storehouse_actual_take_totalnumber</th>
+                    <th>factory_not_delivery_amount</th>
+                    <th>factory_not_delivery_totalnumber</th>
                 </tr>
                 </thead>
                 <tbody id="tbody-order-list">
@@ -45,9 +51,12 @@
                     <td th:text="${orderdetail.unit}"></td>
                     <td th:text="${orderdetail.price}"></td>
                     <td th:text="${orderdetail.total}"></td>
-                    <td th:text="${orderdetail.factoryid}"></td>
-                    <td class="aaa"><input class="form-control ata" name="actual_take_amount"></td>
+                    <td th:text="${orderdetail.factorychinesename}"></td>
+                    <td class="aaa"><input class="form-control ata" name="actual_take_amount" style="width: 90px"></td>
                     <td th:text="${orderdetail.amount}" hidden></td>
+                    <td th:text="${orderdetail.storehouse_actual_take_totalnumber}"></td>
+                    <td th:text="${orderdetail.factory_not_delivery_amount}"></td>
+                    <td th:text="${orderdetail.factory_not_delivery_totalnumber}"></td>
                 </tr>
                 </tbody>
             </table>
@@ -56,7 +65,7 @@
             <input id="id" name="id" th:value="${order.id}" type="hidden">
             <div class="form-group">
                 <label>订单类型：</label>
-                <span name="ordertype" th:text="${order.ordertype}" id="ordertype"></span>
+                <span name="ordertype" th:value="${order.ordertype}" id="ordertype"></span>
             </div>
             <div class="form-group">
                 <label>订单编号：</label>
@@ -104,13 +113,33 @@
 </div>
 
 <script type="text/javascript">
+    $(document).ready(function () {
+        var ordertype = $("#ordertype").val();
+        if (ordertype == 1) {
+            $("#ordertype").val("工厂订单")
+        } else if (ordertype == 2) {
+            $("#ordertype").val("电镀厂订单");
+        }
+    });
+
     $(".aaa input").keyup(function (){
         var actual = Number($(this).val());
         var amount = Number($(this).parent().parent().find("td").eq(11).html());
-    if(actual>amount){
-        alert("实际收货数量不能大于该订单商品数量！")
-        $(this).val("").focus();
+        var factorynotdeliver = Number($(this).parent().parent().find("td").eq(13).html());
+        if ("" == factorynotdeliver) {
+            if (actual > amount) {
+                alert("实际收货数量不能大于该订单商品数量！")
+                $(this).val("").focus();
+                $(this).parent().parent().find("td").eq(3).text(amount);
+            }
+        } else {
+            if (actual > factorynotdeliver) {
+                alert("实际收货数量不能大于工厂未交件数！")
+                $(this).val("").focus();
+                $(this).parent().parent().find("td").eq(3).text(amount);
+            }
         }
+
     });
 
     function updateOrder(){
@@ -127,14 +156,6 @@
             orderDetail = {
                 id : tdArr.eq(0).html(),
                 orderid : tdArr.eq(1).html(),
-                name_spec_color : tdArr.eq(2).html(),
-                amount: tdArr.eq(3).html(),
-                packagenumber: tdArr.eq(4).html(),
-                totalnumber: tdArr.eq(5).html(),
-                unit: tdArr.eq(6).html(),
-                price: tdArr.eq(7).html(),
-                total: tdArr.eq(8).html(),
-                factoryid: tdArr.eq(9).html(),
                 actual_take_amount: tdArr.eq(10).find("input").val()
             };
             orderDetailVOList.push(orderDetail);

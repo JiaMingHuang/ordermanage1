@@ -54,6 +54,16 @@ public class OrderDetailVO {
 	private int storehouse_actual_take_totalnumber;//仓库实收总数量=仓库实收件数*装箱数
 	@Column
 	private double storehouse_actual_take_total;//仓库实收总金额=仓库实收总数量*单价
+	@Column
+	private String factorychinesename;//工厂名称中文名 对应user对象的chinesename
+
+	public String getFactorychinesename() {
+		return factorychinesename;
+	}
+
+	public void setFactorychinesename(String factorychinesename) {
+		this.factorychinesename = factorychinesename;
+	}
 
 	public int getActual_take_total() {
 		return actual_take_total;

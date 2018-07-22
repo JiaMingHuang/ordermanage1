@@ -1,0 +1,94 @@
+<div class="panel panel-default">
+    <div class="panel-heading">修改库存商品</div>
+    <div class="panel-body">
+
+        <div class="page-header part_header">
+            <h1 style="margin-top: 10px">
+                <small>仓库实收情况</small>
+            </h1>
+        </div>
+        <div class="panel-body">
+            <table width="100%"
+                   class="table table-striped table-bordered table-hover" id="order-list">
+                <thead>
+                <tr>
+                    <th>品名规格颜色</th>
+                    <th>仓库实收件数</th>
+                    <th>装箱数</th>
+                    <th>仓库实收总数量</th>
+                    <th>单位</th>
+                    <th>单价</th>
+                    <th>总金额</th>
+                </tr>
+                <tr hidden>
+                    <th>name_spec_color</th>
+                    <th>storehouse_actual_take_amount</th>
+                    <th>packagenumber</th>
+                    <th>storehouse_actual_take_totalnumber</th>
+                    <th>unit</th>
+                    <th>price</th>
+                    <th>storehouse_actual_take_total</th>
+                </tr>
+                </thead>
+                <tbody id="tbody-order-list">
+                <tr th:each="orderdetail : ${orderdetails}">
+                    <td th:text="${orderdetail.id}" hidden></td>
+                    <td th:text="${orderdetail.orderid}" hidden></td>
+                    <td th:text="${orderdetail.name_spec_color}"></td>
+                    <td class="amount" th:text="${orderdetail.storehouse_actual_take_amount}"></td>
+                    <td th:text="${orderdetail.packagenumber}"></td>
+                    <td th:text="${orderdetail.storehouse_actual_take_totalnumber}"></td>
+                    <td th:text="${orderdetail.unit}"></td>
+                    <td th:text="${orderdetail.price}"></td>
+                    <td th:text="${orderdetail.storehouse_actual_take_total}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <form id="order-alert-form" style="padding-left: 15px">
+            <input id="id" name="id" th:value="${order.id}" type="hidden">
+            <div class="form-group">
+                <label>订单类型：</label>
+                <span name="ordertype" th:text="${order.ordertype}" id="ordertype"></span>
+            </div>
+            <div class="form-group">
+                <label>订单编号：</label>
+                <span name="ordernumber" th:text="${order.ordernumber}" id="ordernumber"></span>
+            </div>
+            <div class="form-group">
+                <label>客户名称：</label>
+                <span name="clientname" th:text="${order.clientname}" id="clientname"></span>
+            </div>
+            <div class="form-group">
+                <label>客户联系电话：</label>
+                <span name="contact" th:text="${order.contact}" id="contact"></span>
+            </div>
+            <div class="form-group">
+                <label>客户要求发货时间：</label>
+                <span name="clientdeliverytime" th:text="${order.clientdeliverytime}"
+                      id="clientdeliverytime"></span>
+            </div>
+            <div class="form-group">
+                <label>工厂交货时间：</label>
+                <span name="factorydeliverytime" th:text="${order.factorydeliverytime}"
+                      id="factorydeliverytime"></span>
+            </div>
+            <div class="form-group">
+                <label>送货地址：</label>
+                <span name="address" th:text="${order.address}" id="address"></span>
+            </div>
+            <div class="form-group">
+                <label>退货重镀原因：</label>
+                <span name="reason" th:text="${order.reason}" id="reason"></span>
+            </div>
+            <div class="form-group">
+                <label>订单创建时间：</label>
+                <span name="createdate" th:text="${order.createdate}" id="createdate"></span>
+            </div>
+            <div class="form-group">
+                <label>订单更新时间：</label>
+                <span name="updatedate" th:text="${order.updatedate}" id="updatedate"></span>
+            </div>
+        </form>
+    </div>
+</div>

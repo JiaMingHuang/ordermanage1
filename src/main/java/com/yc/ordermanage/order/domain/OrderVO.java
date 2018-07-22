@@ -1,8 +1,7 @@
 package com.yc.ordermanage.order.domain;
 
-import java.util.Date;
-
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "T_ORDER")
@@ -13,6 +12,10 @@ public class OrderVO {
 	private Long id;
 	@Column
 	private String ordernumber;
+	/**
+	 * 工厂订单为1
+	 * 电镀厂订单为2
+	 */
 	@Column
 	private String ordertype;
 	@Column

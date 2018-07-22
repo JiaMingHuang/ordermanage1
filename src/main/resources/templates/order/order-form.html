@@ -1,4 +1,9 @@
 <div class="panel-body">
+	<div class="page-header part_header">
+		<h1>
+			<small>订单主信息</small>
+		</h1>
+	</div>
 <form id="order-add-form">
 	<div class="form-group" style="padding-left: 15px; padding-right: 15px">
 		<label>订单类型：</label> 
@@ -12,22 +17,23 @@
 		<div class="col-xs-6">
 			<label>客户名称：</label> <input class="form-control" name="clientname"/>
 		</div>
+		<div class="col-xs-6">
+			<label>客户要求发货时间：</label> <input class="form-control" name="clientdeliverytime" type="date"/>
+		</div>
+		<div class="col-xs-6">
+			<label>工厂交货时间：</label> <input class="form-control" name="factorydeliverytime" type="date"/>
+		</div>
+		<div class="col-xs-6">
+			<label>客户联系电话：</label> <input class="form-control" name="contact"/>
+		</div>
+		<div class="col-xs-6">
+			<label>送货地址：</label> <input class="form-control" name="address"/>
+		</div>
+		<div class="col-xs-6">
+			<label>退货重镀原因：</label> <input class="form-control" name="reason"/>
+		</div>
 	</div>
-	<div class="form-group">
-		<label>客户要求发货时间：</label> <input class="form-control" name="clientdeliverytime" type="date"/>
-	</div>
-	<div class="form-group">
-		<label>工厂交货时间：</label> <input class="form-control" name="factorydeliverytime" type="date"/>
-	</div>
-	<div class="form-group">
-		<label>客户联系电话：</label> <input class="form-control" name="contact"/>
-	</div>
-	<div class="form-group">
-		<label>送货地址：</label> <input class="form-control" name="address"/>
-	</div>
-	<div class="form-group">
-		<label>退货重镀原因：</label> <input class="form-control" name="reason"/>
-	</div>
+
 </form>
 </div>
 
@@ -41,7 +47,6 @@
 		<!--<form id="batchimport" th:method="post" th:action="@{/order/batchImport}" enctype="multipart/form-data">-->
 		<div class="panel-body">
 			<input class="btn btn-primary" type="file" name="uploadFile" id="uploadFile">
-			<button onclick="importExp();">导入</button>
 			<div>导入文件仅允许导入“xls”或“xlsx”格式文件！</div>
 		</div>
 		<!--</form>-->

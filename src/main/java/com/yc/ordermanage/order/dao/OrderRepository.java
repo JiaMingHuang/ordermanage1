@@ -30,7 +30,7 @@ public interface OrderRepository extends JpaRepository<OrderVO, Long> {
 	@Query(value = "SELECT T.* FROM T_ORDER T WHERE T.ISGATHER = :isgather", nativeQuery = true)
 	public List<OrderVO> findFinishedOrder(@Param("isgather") String isgather);
 
-	@Query(value = "SELECT T.* FROM T_ORDER T WHERE T.ISGATHER = :id", nativeQuery = true)
+	@Query(value = "SELECT T.* FROM T_ORDER T WHERE T.ID = :id", nativeQuery = true)
 	public OrderVO findOneById(@Param("id") Long id);
 
 	@Modifying

@@ -18,8 +18,9 @@
                 </label>
             </div>
             <div class="form-group">
-                <label>用户编码：</label>
-                <input class="form-control" name="userid" id="userid">
+                <label>用户登录名：</label>
+                <input class="form-control" name="userid" id="userid" onkeyup="value=value.replace(/[\W]/g,'') "
+                       onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))">
             </div>
             <div class="form-group">
                 <label>密码：</label>
@@ -28,6 +29,10 @@
             <div class="form-group">
                 <label>确认密码：</label>
                 <input class="form-control" name="confirmpassword" id="confirmpassword" type="password">
+            </div>
+            <div class="form-group">
+                <label>中文简称：</label>
+                <input class="form-control" name="chinesename" id="chinesename">
             </div>
             <div class="form-group">
                 <label>负责人名称：</label>

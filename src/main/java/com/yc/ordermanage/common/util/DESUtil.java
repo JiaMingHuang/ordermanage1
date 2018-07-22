@@ -57,6 +57,6 @@ public class DESUtil {
 	}
 
 	public static void main(String args[]){
-		System.out.println(encryptBasedDes("1234"));
+		System.out.println(decryptBasedDes("fiRBdLOUpeQ="));
 	}
 }
