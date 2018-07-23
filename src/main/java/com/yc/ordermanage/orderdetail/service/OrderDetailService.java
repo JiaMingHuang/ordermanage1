@@ -88,7 +88,7 @@ public class OrderDetailService {
 	@Transactional
 	public void batchDelete(List<OrderDetailVO> orderDetailVOList) {
 		for (int i = 0; i < orderDetailVOList.size(); i++) {
-			entityManager.remove(orderDetailVOList.get(i));
+			entityManager.remove(entityManager.merge(orderDetailVOList.get(i)));
 			if (i % 50 == 0) {
 				entityManager.flush();
 				entityManager.clear();

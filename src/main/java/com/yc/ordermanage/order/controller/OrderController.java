@@ -1,6 +1,7 @@
 package com.yc.ordermanage.order.controller;
 
 import com.yc.ordermanage.common.util.ChangeToPinYin;
+import com.yc.ordermanage.common.util.FileUtil;
 import com.yc.ordermanage.order.domain.OrderModel;
 import com.yc.ordermanage.order.domain.OrderVO;
 import com.yc.ordermanage.order.service.OrderService;
@@ -17,6 +18,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
 import java.util.*;
 
@@ -396,5 +399,15 @@ public class OrderController {
 		}else{
 			return null;
 		}
+	}
+
+	@RequestMapping(value = "/getTemplate", method = RequestMethod.GET)
+	@ResponseBody
+	public void getTemplate(HttpServletRequest request, HttpServletResponse response) {
+		/*Date date = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+		String dateStr = sdf.format(date);*/
+		String fileName = "佰丽水晶订单商品种类导入模板.xlsx";
+		FileUtil.downloadFile(response, fileName, request.getHeader("User-Agent").indexOf("Trident") == -1);
 	}
 }
