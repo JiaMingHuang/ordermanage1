@@ -69,29 +69,33 @@
 <script>
 
     function batchImport() {
-        var orderVO = $("#order-add-form").serializeObject();// 序列化表单内容
-        var orderModel = {
-            orderVO: orderVO
-        };
-        $.ajax({
-            type: "POST",
-            url: "/order/form",
-            data: JSON.stringify(orderModel),
-            dataType: "json",
-            async: false,
-            contentType: "application/json",
-            context: document.body,
-            success: function (data) {
-                if (data.FLAG == true) {
-                    //订单主信息保存成功，则开始导入excel
-                    importExp(data.ORDERID);
-                }
+        if ($("#uploadFile").val() == '') {
+            alert("请先选择商品详情表再进行保存操作！");
+        } else {
+            var orderVO = $("#order-add-form").serializeObject();// 序列化表单内容
+            var orderModel = {
+                orderVO: orderVO
+            };
+            $.ajax({
+                type: "POST",
+                url: "/order/form",
+                data: JSON.stringify(orderModel),
+                dataType: "json",
+                async: false,
+                contentType: "application/json",
+                context: document.body,
+                success: function (data) {
+                    if (data.FLAG == true) {
+                        //订单主信息保存成功，则开始导入excel
+                        importExp(data.ORDERID);
+                    }
 
-            },
-            error: function (data) {
-                // 提示新增失败
-            }
-        });
+                },
+                error: function (data) {
+                    // 提示新增失败
+                }
+            });
+        }
     }
 
     function importExp(orderId) {

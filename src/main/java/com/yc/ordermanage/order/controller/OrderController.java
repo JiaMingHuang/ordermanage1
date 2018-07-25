@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.util.*;
 
 @RequestMapping("/order")
@@ -163,9 +164,21 @@ public class OrderController {
 		OrderVO orderVO = orderModel.getOrderVO();
 		List<OrderDetailVO> orderDetailVOList = orderModel.getOrderDetailVOList();
 		orderService.updateOrderVO(new Date(), orderVO.getId());//更新主订单修改时间
+		List<OrderDetailVO> tempList = new ArrayList<>();
 		for (OrderDetailVO orderDetailVO : orderDetailVOList) {//更新订单中的商品列表
-			orderDetailService.updateOrderDetail(orderDetailVO);
+			OrderDetailVO temp = orderDetailService.findOneById(orderDetailVO.getId());
+			temp.setActual_take_amount(orderDetailVO.getActual_take_amount());
+			temp.setActual_take_total(orderDetailVO.getActual_take_amount() * temp.getPackagenumber());
+			temp.setFactory_not_delivery_amount(temp.getAmount() - orderDetailVO.getActual_take_amount());
+			temp.setFactory_not_delivery_totalnumber(temp.getFactory_not_delivery_amount() * temp.getPackagenumber());
+			temp.setFactory_not_delivery_total((new BigDecimal(temp.getFactory_not_delivery_totalnumber())).multiply(new BigDecimal(temp.getPrice())).doubleValue());
+			temp.setStorehouse_actual_take_amount(orderDetailVO.getActual_take_amount());
+			temp.setStorehouse_actual_take_totalnumber(temp.getStorehouse_actual_take_amount() * temp.getPackagenumber());
+			temp.setStorehouse_actual_take_total((new BigDecimal(temp.getStorehouse_actual_take_totalnumber())).multiply(new BigDecimal(temp.getPrice())).doubleValue());
+			tempList.add(temp);
+			//orderDetailService.updateOrderDetail(orderDetailVO);
 		}
+		orderDetailService.batchUpdate(tempList);
 		return true;
 	}
 
@@ -395,6 +408,8 @@ public class OrderController {
 			}
 			orderDetailVO.setCreatedate(new Date());
 			orderDetailVO.setUpdatedate(new Date());
+			orderDetailVO.setActual_take_amount(0);
+			orderDetailVO.setDelflag("0");
 			return orderDetailVO;
 		}else{
 			return null;
