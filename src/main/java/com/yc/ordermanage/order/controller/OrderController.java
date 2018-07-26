@@ -409,6 +409,7 @@ public class OrderController {
 			orderDetailVO.setCreatedate(new Date());
 			orderDetailVO.setUpdatedate(new Date());
 			orderDetailVO.setActual_take_amount(0);
+            orderDetailVO.setOrdernumber(orderVO.getOrdernumber());
 			orderDetailVO.setDelflag("0");
 			return orderDetailVO;
 		}else{
